@@ -1,0 +1,80 @@
+/* ===========================
+   ESTILOS GENERALES
+=========================== */
+
+body{
+
+    font-family: 'Poppins', sans-serif;
+
+}
+
+.card{
+
+    border-radius: 18px;
+    transition: .25s ease;
+
+}
+
+.card:hover{
+
+    transform: translateY(-3px);
+
+}
+
+.form-control,
+.form-select{
+
+    border-radius: 12px;
+    padding: .75rem 1rem;
+
+}
+
+.btn{
+
+    border-radius: 12px;
+
+}
+
+.list-group-item{
+
+    border-radius: 12px !important;
+    margin-bottom: .4rem;
+    transition: .25s;
+
+}
+
+/* ===========================
+      RESUMEN
+=========================== */
+
+.resumen-card{
+
+    border: 1px solid;
+    border-radius: 30px;
+    transition: .25s ease;
+
+}
+
+.resumen-card:hover{
+
+    transform: translateY(-4px);
+
+}
+
+.icon-resumen{
+
+    width: 56px;
+    height: 56px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin: auto;
+    margin-bottom: 1rem;
+
+}
