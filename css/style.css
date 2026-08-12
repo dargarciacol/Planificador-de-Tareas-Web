@@ -1,80 +1,828 @@
-/* ===========================
-   ESTILOS GENERALES
-=========================== */
+/* =========================================================
+   PLANIFICADOR DE TAREAS
+   Diseño inspirado en NOVA
+   Paleta principal: AZUL
+   ========================================================= */
 
-body{
+:root {
+    --primary: #08074d;
+    --primary-light: #0d5c73;
+    --primary-dark: #062d3a;
 
+    --secondary: #087f7c;
+
+    --light: #b8dae9;
+    --lighter: #f8fafb;
+
+    --dark: #021d3a;
+    --text: #4e535a;
+    --muted: #7b858d;
+
+    --white: #ffffff;
+
+    --border: #e2e8ec;
+
+    --danger: #dc3545;
+    --warning: #f0ad00;
+
+    --shadow-sm: 0 5px 18px rgba(2, 29, 58, 0.07);
+    --shadow-md: 0 12px 30px rgba(2, 29, 58, 0.10);
+    --shadow-lg: 0 20px 45px rgba(2, 29, 58, 0.13);
+
+    --radius: 18px;
+    --radius-lg: 24px;
+}
+
+
+/* =========================================================
+   GENERAL
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
     font-family: 'Poppins', sans-serif;
-
+    background: var(--light);
+    color: var(--text);
 }
 
-.card{
 
-    border-radius: 18px;
-    transition: .25s ease;
+/* =========================================================
+   NAVBAR
+   ========================================================= */
 
+.navbar {
+    background: var(--white) !important;
+    border-bottom: 1px solid var(--border) !important;
+    box-shadow: 0 4px 20px rgba(2, 29, 58, 0.06) !important;
 }
 
-.card:hover{
+.navbar-brand {
+    color: var(--dark) !important;
+    transition: 0.3s ease;
+}
 
-    transform: translateY(-3px);
+.navbar-brand:hover {
+    color: var(--primary) !important;
+    transform: translateY(-1px);
+}
 
+.navbar-brand img {
+    object-fit: contain;
+}
+
+.navbar-brand h3 {
+    color: var(--dark);
+    letter-spacing: -0.4px;
+}
+
+
+/* =========================================================
+   BUSCADOR
+   ========================================================= */
+
+.input-group {
+    width: 280px;
+}
+
+.input-group-text {
+    border: 1px solid var(--border);
+    border-right: none;
+    color: var(--primary);
+}
+
+.input-group .form-control {
+    border-left: none;
+}
+
+.input-group .form-control:focus {
+    border-color: var(--primary);
+    box-shadow: none;
 }
 
 .form-control,
-.form-select{
-
-    border-radius: 12px;
-    padding: .75rem 1rem;
-
+.form-select {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    min-height: 44px;
+    color: var(--dark);
+    background-color: var(--white);
 }
 
-.btn{
-
-    border-radius: 12px;
-
+.form-control::placeholder {
+    color: #a0a8ae;
 }
 
-.list-group-item{
-
-    border-radius: 12px !important;
-    margin-bottom: .4rem;
-    transition: .25s;
-
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(9, 64, 81, 0.10);
 }
 
-/* ===========================
-      RESUMEN
-=========================== */
 
-.resumen-card{
+/* =========================================================
+   BOTÓN MODO OSCURO
+   ========================================================= */
 
-    border: 1px solid;
-    border-radius: 30px;
-    transition: .25s ease;
-
-}
-
-.resumen-card:hover{
-
-    transform: translateY(-4px);
-
-}
-
-.icon-resumen{
-
-    width: 56px;
-    height: 56px;
-
-    border-radius: 50%;
+.navbar .btn-light {
+    width: 44px;
+    height: 44px;
+    padding: 0;
 
     display: flex;
-
+    align-items: center;
     justify-content: center;
 
+    background: var(--white);
+    border-color: var(--border) !important;
+    color: var(--primary);
+}
+
+.navbar .btn-light:hover {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary) !important;
+}
+
+
+/* =========================================================
+   PERFIL
+   ========================================================= */
+
+.navbar .border.rounded-pill {
+    border-color: var(--border) !important;
+    background: var(--white);
+    color: var(--dark);
+    transition: 0.3s ease;
+}
+
+.navbar .border.rounded-pill:hover {
+    border-color: var(--primary) !important;
+    box-shadow: var(--shadow-sm);
+}
+
+.navbar .border.rounded-pill .material-symbols-outlined:first-child {
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   CONTENIDO PRINCIPAL
+   ========================================================= */
+
+main.container-fluid {
+    padding-left: 28px;
+    padding-right: 28px;
+}
+
+
+/* =========================================================
+   CARDS GENERALES
+   ========================================================= */
+
+.card {
+    border-color: var(--border) !important;
+    background: var(--white);
+}
+
+.card.shadow-sm {
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.card.rounded-4 {
+    border-radius: var(--radius-lg) !important;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+aside.card {
+    min-height: 680px;
+    box-shadow: var(--shadow-md) !important;
+}
+
+aside .card-body {
+    padding: 28px 22px;
+}
+
+aside h6 {
+    color: var(--muted) !important;
+    font-size: 0.75rem;
+    letter-spacing: 1.2px;
+}
+
+
+/* =========================================================
+   MENÚ LATERAL
+   ========================================================= */
+
+.list-group-item {
+    border: none !important;
+    background: transparent;
+    color: var(--text);
+    font-weight: 500;
+
+    padding: 13px 15px;
+
+    display: flex;
     align-items: center;
 
-    margin: auto;
-    margin-bottom: 1rem;
+    transition: all 0.25s ease;
+}
+
+.list-group-item .material-symbols-outlined {
+    font-size: 21px;
+    color: var(--primary);
+}
+
+.list-group-item:hover {
+    background: #edf4f7;
+    color: var(--primary);
+    transform: translateX(3px);
+}
+
+.list-group-item.active {
+    background: var(--primary) !important;
+    color: var(--white) !important;
+    box-shadow: 0 7px 18px rgba(9, 64, 81, 0.20);
+}
+
+.list-group-item.active .material-symbols-outlined {
+    color: var(--white);
+}
+
+aside hr {
+    border-color: var(--border);
+    opacity: 1;
+    margin: 18px 0;
+}
+
+
+/* =========================================================
+   CONSEJO DEL DÍA
+   ========================================================= */
+
+aside .bg-light {
+    background: #eef5f7 !important;
+}
+
+aside .bg-light .card-body {
+    padding: 20px;
+}
+
+aside .bg-light .material-symbols-outlined {
+    color: var(--primary) !important;
+}
+
+aside .bg-light h6 {
+    color: var(--dark) !important;
+    letter-spacing: 0;
+    font-size: 0.95rem;
+}
+
+aside .bg-light p {
+    color: var(--text) !important;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   NUEVA TAREA
+   ========================================================= */
+
+.col-lg-4 > .card {
+    box-shadow: var(--shadow-md) !important;
+}
+
+.col-lg-4 > .card .card-body {
+    padding: 30px !important;
+}
+
+.col-lg-4 h4 {
+    color: var(--dark);
+}
+
+.col-lg-4 > .card .fs-2 {
+    color: var(--primary) !important;
+}
+
+
+/* =========================================================
+   LABELS
+   ========================================================= */
+
+.form-label {
+    color: var(--dark);
+    font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   BOTÓN PRINCIPAL
+   ========================================================= */
+
+.btn-primary {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: var(--white) !important;
+    font-weight: 600;
+
+    border-radius: 11px;
+
+    transition: all 0.25s ease;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark) !important;
+    border-color: var(--primary-dark) !important;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 20px rgba(9, 64, 81, 0.22);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   RESUMEN
+   ========================================================= */
+
+.col-lg-4 .mt-5 {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+}
+
+.col-lg-4 .mt-5 h6 {
+    color: var(--dark);
+}
+
+.col-lg-4 .mt-5 > .d-flex .material-symbols-outlined {
+    color: var(--primary) !important;
+}
+
+
+/* =========================================================
+   CARDS DEL RESUMEN
+   ========================================================= */
+
+.col-lg-4 .row.g-3 .card {
+    border: 1px solid var(--border) !important;
+    box-shadow: none !important;
+    transition: all 0.25s ease;
+}
+
+.col-lg-4 .row.g-3 .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.col-lg-4 .row.g-3 .card-body {
+    padding: 18px 8px;
+}
+
+.col-lg-4 .row.g-3 h3 {
+    color: var(--dark);
+}
+
+
+/* =========================================================
+   ICONOS DEL RESUMEN
+   Azul en lugar de verde
+   ========================================================= */
+
+.bg-warning-subtle {
+    background: #fff5d9 !important;
+}
+
+.bg-success-subtle {
+    background: #e7f0f3 !important;
+}
+
+.bg-primary-subtle {
+    background: #e7f0f3 !important;
+}
+
+.text-success {
+    color: var(--primary) !important;
+}
+
+.text-primary {
+    color: var(--primary) !important;
+}
+
+.text-warning {
+    color: var(--warning) !important;
+}
+
+
+/* =========================================================
+   LISTA DE TAREAS
+   ========================================================= */
+
+.col-lg-5 > .card {
+    box-shadow: var(--shadow-md) !important;
+}
+
+.col-lg-5 > .card .card-body {
+    padding: 30px;
+}
+
+.col-lg-5 h4 {
+    color: var(--dark);
+}
+
+.col-lg-5 h5 {
+    color: var(--dark);
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   FILTROS
+   ========================================================= */
+
+.col-lg-5 .btn-outline-secondary {
+    border-color: var(--border);
+    color: var(--text);
+    background: var(--white);
+
+    font-weight: 500;
+}
+
+.col-lg-5 .btn-outline-secondary:hover {
+    background: #edf4f7;
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.col-lg-5 .btn.rounded-pill {
+    padding: 8px 18px;
+}
+
+
+/* =========================================================
+   TARJETAS DE TAREAS
+   ========================================================= */
+
+.col-lg-5 .d-flex.flex-column.gap-3 > .card {
+    border: 1px solid var(--border) !important;
+    border-radius: 16px !important;
+
+    box-shadow: none;
+
+    transition: all 0.25s ease;
+}
+
+.col-lg-5 .d-flex.flex-column.gap-3 > .card:hover {
+    border-color: #bfd0d7 !important;
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+}
+
+.col-lg-5 .d-flex.flex-column.gap-3 > .card .card-body {
+    padding: 20px;
+}
+
+
+/* =========================================================
+   BADGES DE PRIORIDAD
+   ========================================================= */
+
+.badge {
+    border-radius: 8px;
+    padding: 7px 11px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+/* Alta */
+
+.badge.bg-warning {
+    background: #fff0c7 !important;
+    color: #8a6500 !important;
+}
+
+/* Media */
+
+.badge.bg-primary {
+    background: #dcecf2 !important;
+    color: var(--primary) !important;
+}
+
+/* Baja
+   Quitamos el verde de Bootstrap */
+
+.badge.bg-success {
+    background: #e7f0f3 !important;
+    color: var(--primary) !important;
+}
+
+
+/* =========================================================
+   FECHA DE TAREA
+   ========================================================= */
+
+.col-lg-5 small {
+    color: var(--muted) !important;
+}
+
+.col-lg-5 small .material-symbols-outlined {
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   BOTÓN EDITAR
+   ========================================================= */
+
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+    border-radius: 9px;
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR
+   ========================================================= */
+
+.btn-outline-danger {
+    border-radius: 9px;
+}
+
+.btn-outline-danger:hover {
+    box-shadow: 0 5px 12px rgba(220, 53, 69, 0.15);
+}
+
+
+/* =========================================================
+   BOTONES DE ACCIONES
+   ========================================================= */
+
+.btn-sm {
+    width: 38px;
+    height: 38px;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-sm .material-symbols-outlined {
+    font-size: 19px;
+}
+
+
+/* =========================================================
+   ESTADO VACÍO
+   ========================================================= */
+
+.col-lg-5 .text-center.py-5 {
+    padding-top: 45px !important;
+}
+
+.col-lg-5 .text-center.py-5 .material-symbols-outlined {
+    color: #b7c4ca !important;
+}
+
+.col-lg-5 .text-center.py-5 h5 {
+    color: var(--dark);
+}
+
+.col-lg-5 .text-center.py-5 p {
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+    background: var(--white);
+    border-top: 1px solid var(--border) !important;
+    color: var(--muted);
+
+    margin-top: 40px !important;
+}
+
+footer .container-fluid {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+footer a {
+    color: var(--primary) !important;
+    font-weight: 500;
+    transition: 0.25s ease;
+}
+
+footer a:hover {
+    color: var(--primary-dark) !important;
+    transform: translateY(-1px);
+}
+
+footer .material-symbols-outlined {
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   VALIDACIÓN DE FORMULARIO
+   ========================================================= */
+
+.was-validated .form-control:invalid,
+.was-validated .form-select:invalid,
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: var(--danger);
+}
+
+.invalid-feedback {
+    font-size: 0.78rem;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #edf1f3;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #a9bbc3;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+
+/* =========================================================
+   ANIMACIONES
+   ========================================================= */
+
+.card {
+    animation: fadeIn 0.45s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1199px) {
+
+    .input-group {
+        width: 220px;
+    }
+
+    main.container-fluid {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+}
+
+
+@media (max-width: 991px) {
+
+    aside.card {
+        min-height: auto;
+    }
+
+    .navbar .container-fluid {
+        gap: 20px;
+    }
+
+    .navbar .d-flex.align-items-center.gap-3 {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .input-group {
+        width: 220px;
+    }
+
+}
+
+
+@media (max-width: 767px) {
+
+    .navbar {
+        padding: 15px !important;
+    }
+
+    .navbar .container-fluid {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .navbar-brand {
+        justify-content: center;
+    }
+
+    .navbar .container-fluid > .d-flex {
+        justify-content: center !important;
+    }
+
+    .input-group {
+        width: 100%;
+    }
+
+    main.container-fluid {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .col-lg-4 > .card .card-body,
+    .col-lg-5 > .card .card-body {
+        padding: 22px !important;
+    }
+
+    footer .d-flex {
+        justify-content: center !important;
+        gap: 15px;
+    }
+
+    footer .d-flex > div {
+        width: 100%;
+        justify-content: center;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .navbar-brand h3 {
+        font-size: 1rem;
+    }
+
+    .navbar-brand img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .navbar .border.rounded-pill {
+        padding: 8px 12px !important;
+    }
+
+    .col-lg-5 .d-flex.gap-2 {
+        flex-wrap: wrap;
+    }
+
+    .col-lg-4 .row.g-3 {
+        --bs-gutter-x: 8px;
+    }
+
+    .col-lg-4 .row.g-3 .card-body {
+        padding: 14px 5px;
+    }
+
+    .col-lg-4 .row.g-3 h3 {
+        font-size: 1.4rem;
+    }
+
+    .col-lg-4 .row.g-3 small {
+        font-size: 0.65rem;
+    }
 
 }

@@ -20,7 +20,7 @@
 
     <!-- Google Icons -->
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
 
     <!-- CSS -->
     <link rel="stylesheet" href="./css/style.css">
@@ -37,7 +37,7 @@
 
             <div class="container-fluid">
 
-                <a href="#" class="navbar-brand d-flex align-items-center gap-3">
+                <a href="./index.html" class="navbar-brand d-flex align-items-center gap-3">
 
                     <img src="./assets/images/img1.svg"
                         alt="Logo"
@@ -101,11 +101,13 @@
 
     </header>
 
+
     <!-- ================= CONTENIDO ================= -->
 
     <main class="container-fluid my-4">
 
         <div class="row g-4">
+
 
             <!-- ================= SIDEBAR ================= -->
 
@@ -118,14 +120,13 @@
                         <div>
 
                             <h6 class="text-uppercase text-secondary fw-semibold mb-4">
-
                                 Menú
-
                             </h6>
 
                             <div class="list-group list-group-flush">
 
-                                <a href="#" class="list-group-item list-group-item-action active rounded-3 mb-2">
+                                <a href="./index.html"
+                                    class="list-group-item list-group-item-action active rounded-3 mb-2">
 
                                     <span class="material-symbols-outlined me-2">
                                         home
@@ -135,7 +136,9 @@
 
                                 </a>
 
-                                <a href="#" class="list-group-item list-group-item-action rounded-3 mb-2">
+
+                                <a href="./pages/hoy.html"
+                                    class="list-group-item list-group-item-action rounded-3 mb-2">
 
                                     <span class="material-symbols-outlined me-2">
                                         today
@@ -145,7 +148,9 @@
 
                                 </a>
 
-                                <a href="#" class="list-group-item list-group-item-action rounded-3 mb-2">
+
+                                <a href="./pages/todasLasTareas.html"
+                                    class="list-group-item list-group-item-action rounded-3 mb-2">
 
                                     <span class="material-symbols-outlined me-2">
                                         checklist
@@ -155,7 +160,9 @@
 
                                 </a>
 
-                                <a href="#" class="list-group-item list-group-item-action rounded-3 mb-2">
+
+                                <a href="./pages/completadas.html"
+                                    class="list-group-item list-group-item-action rounded-3 mb-2">
 
                                     <span class="material-symbols-outlined me-2">
                                         task_alt
@@ -165,7 +172,9 @@
 
                                 </a>
 
-                                <a href="#" class="list-group-item list-group-item-action rounded-3">
+
+                                <a href="./pages/estadisticas.html"
+                                    class="list-group-item list-group-item-action rounded-3">
 
                                     <span class="material-symbols-outlined me-2">
                                         monitoring
@@ -177,11 +186,14 @@
 
                             </div>
 
+
                             <hr>
+
 
                             <div class="list-group list-group-flush">
 
-                                <a href="#" class="list-group-item list-group-item-action rounded-3">
+                                <a href="#"
+                                    class="list-group-item list-group-item-action rounded-3">
 
                                     <span class="material-symbols-outlined me-2">
                                         settings
@@ -195,7 +207,8 @@
 
                         </div>
 
-                        <div class="mt-auto">
+
+                        <div class="mt-4">
 
                             <div class="card border-0 bg-light rounded-4">
 
@@ -228,6 +241,7 @@
 
             </div>
 
+
             <!-- ================= NUEVA TAREA ================= -->
 
             <div class="col-lg-4">
@@ -239,9 +253,7 @@
                         <div class="d-flex justify-content-between align-items-center mb-4">
 
                             <h4 class="fw-semibold mb-0">
-
                                 Nueva Tarea
-
                             </h4>
 
                             <span class="material-symbols-outlined fs-2 text-primary">
@@ -250,85 +262,137 @@
 
                         </div>
 
-                        <div class="mb-3">
 
-                            <label class="form-label fw-medium">
-                                Título
-                            </label>
+                        <!-- ================= FORMULARIO ================= -->
 
-                            <input
-                                type="text"
-                                class="form-control"
-                                placeholder="Ingrese el título">
+                        <form id="taskForm">
 
-                        </div>
 
-                        <div class="mb-4">
+                            <!-- TÍTULO -->
 
-                            <label class="form-label fw-medium">
-                                Descripción
-                            </label>
+                            <div class="mb-3">
 
-                            <textarea
-                                class="form-control"
-                                rows="5"
-                                placeholder="Describe la tarea"></textarea>
-
-                        </div>
-
-                        <div class="row">
-
-                            <div class="col-md-6 mb-3">
-
-                                <label class="form-label fw-medium">
-
-                                    Fecha
-
+                                <label for="titulo" class="form-label fw-medium">
+                                    Tarea
                                 </label>
 
                                 <input
-                                    type="date"
-                                    class="form-control">
+                                    type="text"
+                                    id="titulo"
+                                    name="titulo"
+                                    class="form-control"
+                                    placeholder="Ingrese el título">
+
+                                <div id="tareaError" class="invalid-feedback">
+                                    La tarea es obligatoria.
+                                </div>
 
                             </div>
 
-                            <div class="col-md-6 mb-3">
 
-                                <label class="form-label fw-medium">
+                            <!-- DESCRIPCIÓN -->
 
-                                    Prioridad
+                            <div class="mb-4">
 
+                                <label for="descripcion" class="form-label fw-medium">
+                                    Descripción
                                 </label>
 
-                                <select class="form-select">
+                                <textarea
+                                    id="descripcion"
+                                    name="descripcion"
+                                    class="form-control"
+                                    rows="5"
+                                    placeholder="Describe la tarea"></textarea>
 
-                                    <option selected disabled>
-                                        Seleccionar
-                                    </option>
-
-                                    <option>Alta</option>
-                                    <option>Media</option>
-                                    <option>Baja</option>
-
-                                </select>
+                                <div id="descripcionError" class="invalid-feedback">
+                                    La descripción es obligatoria.
+                                </div>
 
                             </div>
 
-                        </div>
 
-                        <div class="d-grid mt-4">
+                            <!-- FECHA Y PRIORIDAD -->
 
-                            <button class="btn btn-primary">
+                            <div class="row">
 
-                                <span class="material-symbols-outlined me-2 align-middle">
-                                    add_task
-                                </span>
+                                <div class="col-md-6 mb-3">
 
-                                Agregar tarea
+                                    <label for="fecha" class="form-label fw-medium">
+                                        Fecha
+                                    </label>
 
-                            </button>
+                                    <input
+                                        type="date"
+                                        id="fecha"
+                                        name="fecha"
+                                        class="form-control">
 
-                        </div>
+                                    <div id="fechaError" class="invalid-feedback">
+                                        La fecha es obligatoria.
+                                    </div>
+
+                                </div>
+
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label for="prioridad" class="form-label fw-medium">
+                                        Prioridad
+                                    </label>
+
+                                    <select
+                                        id="prioridad"
+                                        name="prioridad"
+                                        class="form-select">
+
+                                        <option value="" selected disabled>
+                                            Seleccionar
+                                        </option>
+
+                                        <option value="Alta">
+                                            Alta
+                                        </option>
+
+                                        <option value="Media">
+                                            Media
+                                        </option>
+
+                                        <option value="Baja">
+                                            Baja
+                                        </option>
+
+                                    </select>
+
+                                    <div id="prioridadError" class="invalid-feedback">
+                                        Debes seleccionar una prioridad.
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- BOTÓN -->
+
+                            <div class="d-grid mt-4">
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary">
+
+                                    <span class="material-symbols-outlined me-2 align-middle">
+                                        add_task
+                                    </span>
+
+                                    Agregar tarea
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
 
                         <!-- ================= RESUMEN ================= -->
 
@@ -337,9 +401,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-3">
 
                                 <h6 class="fw-semibold">
-
                                     Resumen
-
                                 </h6>
 
                                 <span class="material-symbols-outlined text-primary">
@@ -348,7 +410,9 @@
 
                             </div>
 
+
                             <div class="row g-3">
+
 
                                 <div class="col-4">
 
@@ -377,6 +441,7 @@
 
                                 </div>
 
+
                                 <div class="col-4">
 
                                     <div class="card border-0 shadow-sm rounded-4 h-100">
@@ -403,6 +468,7 @@
                                     </div>
 
                                 </div>
+
 
                                 <div class="col-4">
 
@@ -440,13 +506,16 @@
                 </div>
 
             </div>
-                        <!-- ================= LISTA DE TAREAS ================= -->
+
+
+            <!-- ================= LISTA DE TAREAS ================= -->
 
             <div class="col-lg-5">
 
                 <div class="card border-0 shadow-sm rounded-4 h-100">
 
                     <div class="card-body">
+
 
                         <!-- Encabezado -->
 
@@ -470,6 +539,7 @@
 
                         </div>
 
+
                         <!-- Filtros -->
 
                         <div class="d-flex gap-2 mb-4">
@@ -488,73 +558,268 @@
 
                         </div>
 
+
                         <!-- Lista -->
 
                         <div class="d-flex flex-column gap-3">
+
 
                             <!-- Tarea -->
 
                             <div class="card border rounded-4">
 
-                                <div class="card-body">
+    <div class="card-body">
 
-                                    <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between">
 
-                                        <div>
+            <div>
 
-                                            <h5 class="mb-1">
-                                                Diseñar interfaz principal
-                                            </h5>
+                <h5 class="mb-1">
+                    Diseñar interfaz principal
+                </h5>
 
-                                            <p class="text-secondary mb-2">
-                                                Crear el diseño inicial del proyecto utilizando Bootstrap.
-                                            </p>
+                <p class="text-secondary mb-2">
+                    Crear el diseño inicial del proyecto utilizando Bootstrap.
+                </p>
 
-                                        </div>
+            </div>
 
-                                        <span class="badge bg-warning text-dark align-self-start">
-                                            Alta
-                                        </span>
+            <span class="badge bg-warning text-dark align-self-start">
+                Alta
+            </span>
 
-                                    </div>
+        </div>
 
-                                    <div class="d-flex justify-content-between align-items-center mt-3">
+        <div class="d-flex justify-content-between align-items-center mt-3">
 
-                                        <small class="text-secondary d-flex align-items-center gap-1">
+            <small class="text-secondary d-flex align-items-center gap-1">
 
-                                            <span class="material-symbols-outlined fs-6">
-                                                calendar_month
-                                            </span>
+                <span class="material-symbols-outlined fs-6">
+                    calendar_month
+                </span>
 
-                                            30/07/2026
+                30/07/2026
 
-                                        </small>
+            </small>
 
-                                        <div class="d-flex gap-2">
+            <div class="d-flex gap-2">
 
-                                            <button class="btn btn-outline-primary btn-sm">
+                <button class="btn btn-outline-primary btn-sm">
 
-                                                <span class="material-symbols-outlined">
-                                                    edit
-                                                </span>
+                    <span class="material-symbols-outlined">
+                        edit
+                    </span>
 
-                                            </button>
+                </button>
 
-                                            <button class="btn btn-outline-danger btn-sm">
+                <button class="btn btn-outline-danger btn-sm">
 
-                                                <span class="material-symbols-outlined">
-                                                    delete
-                                                </span>
+                    <span class="material-symbols-outlined">
+                        delete
+                    </span>
 
-                                            </button>
+                </button>
 
-                                        </div>
+            </div>
 
-                                    </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Tarea 2 -->
+<div class="card border rounded-4">
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between">
+
+            <div>
+
+                <h5 class="mb-1">
+                    Crear estructura del proyecto
+                </h5>
+
+                <p class="text-secondary mb-2">
+                    Organizar los archivos y carpetas principales del Planificador de Tareas.
+                </p>
+
+            </div>
+
+            <span class="badge bg-warning text-dark align-self-start">
+                Alta
+            </span>
+
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-3">
+
+            <small class="text-secondary d-flex align-items-center gap-1">
+
+                <span class="material-symbols-outlined fs-6">
+                    calendar_month
+                </span>
+
+                01/08/2026
+
+            </small>
+
+            <div class="d-flex gap-2">
+
+                <button class="btn btn-outline-primary btn-sm">
+
+                    <span class="material-symbols-outlined">
+                        edit
+                    </span>
+
+                </button>
+
+                <button class="btn btn-outline-danger btn-sm">
+
+                    <span class="material-symbols-outlined">
+                        delete
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Tarea 3 -->
+<div class="card border rounded-4">
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between">
+
+            <div>
+
+                <h5 class="mb-1">
+                    Implementar validaciones del formulario
+                </h5>
+
+                <p class="text-secondary mb-2">
+                    Validar que los campos requeridos del formulario no estén vacíos.
+                </p>
+
+            </div>
+
+            <span class="badge bg-primary align-self-start">
+                Media
+            </span>
+
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-3">
+
+            <small class="text-secondary d-flex align-items-center gap-1">
+
+                <span class="material-symbols-outlined fs-6">
+                    calendar_month
+                </span>
+
+                05/08/2026
+
+            </small>
+
+            <div class="d-flex gap-2">
+
+                <button class="btn btn-outline-primary btn-sm">
+
+                    <span class="material-symbols-outlined">
+                        edit
+                    </span>
+
+                </button>
+
+                <button class="btn btn-outline-danger btn-sm">
+
+                    <span class="material-symbols-outlined">
+                        delete
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Tarea 4 -->
+<div class="card border rounded-4">
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between">
+
+            <div>
+
+                <h5 class="mb-1">
+                    Revisar documentación del proyecto
+                </h5>
+
+                <p class="text-secondary mb-2">
+                    Actualizar el README y verificar la organización del repositorio.
+                </p>
+
+            </div>
+
+            <span class="badge bg-success align-self-start">
+                Baja
+            </span>
+
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-3">
+
+            <small class="text-secondary d-flex align-items-center gap-1">
+
+                <span class="material-symbols-outlined fs-6">
+                    calendar_month
+                </span>
+
+                08/08/2026
+
+            </small>
+
+            <div class="d-flex gap-2">
+
+                <button class="btn btn-outline-primary btn-sm">
+
+                    <span class="material-symbols-outlined">
+                        edit
+                    </span>
+
+                </button>
+
+                <button class="btn btn-outline-danger btn-sm">
+
+                    <span class="material-symbols-outlined">
+                        delete
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
 
                                 </div>
 
-                            </div>
 
                             <!-- Estado vacío -->
 
@@ -590,60 +855,84 @@
         </div>
 
     </main>
-<footer class="border-top mt-5 py-3">
 
-    <div class="container-fluid">
 
-        <div class="d-flex justify-content-between align-items-center flex-wrap">
+    <!-- ================= FOOTER ================= -->
 
-            <!-- Copyright -->
-            <div class="d-flex align-items-center gap-2">
+    <footer class="border-top mt-5 py-3">
 
-                <span class="material-symbols-outlined">
-                    copyright
-                </span>
+        <div class="container-fluid">
 
-                <small class="mb-0">
-                    2026 Planificador de Tareas. Todos los derechos reservados.
-                </small>
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
 
-            </div>
 
-            <!-- Redes -->
-            <div class="d-flex align-items-center gap-4">
+                <!-- Copyright -->
 
-                <a href="https://github.com/dargarciacol"
-                    target="_blank"
-                    class="text-decoration-none d-flex align-items-center gap-2">
+                <div class="d-flex align-items-center gap-2">
 
                     <span class="material-symbols-outlined">
-                        code
+                        copyright
                     </span>
 
-                    <span>GitHub</span>
+                    <small class="mb-0">
+                        2026 Planificador de Tareas. Todos los derechos reservados.
+                    </small>
 
-                </a>
+                </div>
 
-                <a href="www.linkedin.com/in/santiagogarcia-backend-developer-python-django-nodejs-java-restapi-mongodb-mysql"
-                    target="_blank"
-                    class="text-decoration-none d-flex align-items-center gap-2">
 
-                    <span class="material-symbols-outlined">
-                        business_center
-                    </span>
+                <!-- Redes -->
 
-                    <span>LinkedIn</span>
+                <div class="d-flex align-items-center gap-4">
 
-                </a>
+
+                    <a href="https://github.com/dargarciacol"
+                        target="_blank"
+                        class="text-decoration-none d-flex align-items-center gap-2">
+
+                        <span class="material-symbols-outlined">
+                            code
+                        </span>
+
+                        <span>
+                            GitHub
+                        </span>
+
+                    </a>
+
+
+                    <a href="https://www.linkedin.com/in/santiagogarcia-backend-developer-python-django-nodejs-java-restapi-mongodb-mysql"
+                        target="_blank"
+                        class="text-decoration-none d-flex align-items-center gap-2">
+
+                        <span class="material-symbols-outlined">
+                            business_center
+                        </span>
+
+                        <span>
+                            LinkedIn
+                        </span>
+
+                    </a>
+
+                </div>
 
             </div>
 
         </div>
 
-    </div>
+    </footer>
 
-</footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap JavaScript -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+
+    <!-- JavaScript del proyecto -->
+
+    <script src="./app.js"></script>
 
 </body>
 
