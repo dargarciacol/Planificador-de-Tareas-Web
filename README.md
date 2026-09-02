@@ -2,17 +2,15 @@
 
 Aplicación web para la gestión de tareas diarias, diseñada con una interfaz moderna, intuitiva y enfocada en la productividad.
 
-El proyecto busca facilitar la organización de actividades mediante la creación, visualización y gestión de tareas.
+El proyecto busca facilitar la organización de actividades mediante la creación, visualización, edición, filtrado y gestión completa de tareas.
 
 ---
 
-## 🚀 Estado del proyecto
+## Estado del proyecto:
 
-🟢 **Primera etapa finalizada**
+🟢 **Proyecto finalizado e interactivo**
 
-La primera etapa del proyecto se encuentra finalizada, incluyendo la estructura visual, navegación, formularios, tarjetas de tareas, panel de resumen y páginas principales de la aplicación.
-
-Actualmente se inicia la siguiente etapa, enfocada en implementar la lógica funcional mediante JavaScript.
+Se han completado con éxito la estructura visual, el diseño responsive y la lógica funcional mediante JavaScript. La aplicación permite agregar, editar, eliminar y filtrar tareas en tiempo real, manteniendo una interfaz limpia e interactiva.
 
 ---
 
@@ -26,57 +24,45 @@ Actualmente se inicia la siguiente etapa, enfocada en implementar la lógica fun
 - ✅ Botón para cambio de tema.
 - ✅ Perfil de usuario.
 - ✅ Creación del Sidebar con menú de navegación.
-- ✅ Diseño responsive utilizando Bootstrap.
-- ✅ Definición de una paleta de colores para la aplicación.
+- ✅ Diseño responsive utilizando Bootstrap 5.
+- ✅ Definición de paleta de colores personalizada (estilo NOVA).
 - ✅ Integración de Google Fonts (Poppins).
 - ✅ Integración de Google Material Symbols.
-- ✅ Diseño de tarjetas con bordes redondeados.
-- ✅ Implementación de sombras y estilos visuales.
-- ✅ Diseño de estados vacíos.
+- ✅ Diseño de tarjetas con bordes redondeados y sombras suaves.
+- ✅ Diseño de estados vacíos cuando no hay tareas.
 - ✅ Implementación del Footer.
 
-### 📝 Gestión visual de tareas
+### 📝 Gestión funcional de tareas (JavaScript)
 
-- ✅ Diseño del formulario para registrar nuevas tareas.
-- ✅ Campo para título de la tarea.
-- ✅ Campo para descripción.
-- ✅ Campo para fecha.
-- ✅ Selector de prioridad.
-- ✅ Validación visual de los campos obligatorios.
-- ✅ Botón para agregar tareas.
-- ✅ Creación de tarjetas individuales para las tareas.
-- ✅ Indicadores visuales de prioridad.
-- ✅ Botón para editar tareas.
-- ✅ Botón para eliminar tareas.
-- ✅ Filtros visuales para las tareas.
-- ✅ Sección "Mis Tareas".
+- ✅ Formulario para registrar y editar tareas.
+- ✅ Validación dinámica de campos obligatorios.
+- ✅ Creación dinámica de tarjetas de tareas.
+- ✅ Indicadores visuales según la prioridad (Alta, Media, Baja).
+- ✅ Funcionalidad para editar tareas existentes.
+- ✅ Funcionalidad para eliminar tareas.
+- ✅ Filtros funcionales para listar tareas por estado o prioridad.
+- ✅ Buscador en tiempo real.
 
-### 📊 Resumen
+### 📊 Resumen e indicadores
 
-- ✅ Panel de tareas pendientes.
-- ✅ Panel de tareas completadas.
-- ✅ Panel de tareas para hoy.
-- ✅ Diseño de indicadores mediante tarjetas.
-- ✅ Sección de resumen general.
+- ✅ Panel dinámico de tareas pendientes.
+- ✅ Panel dinámico de tareas completadas.
+- ✅ Panel de tareas programadas para el día actual.
+- ✅ Actualización automática de contadores.
 
-### 📄 Páginas
+### 📄 Páginas y navegación
 
-- ✅ Página principal.
-- ✅ Página de tareas para hoy.
-- ✅ Página de todas las tareas.
-- ✅ Página de tareas completadas.
-- ✅ Página de estadísticas.
-- ✅ Página de configuración/en construcción.
-- ✅ Navegación entre las diferentes secciones.
+- ✅ Página principal (`index.html`).
+- ✅ Vista de tareas para hoy.
+- ✅ Vista de todas las tareas.
+- ✅ Vista de tareas completadas.
+- ✅ Navegación fluida entre secciones.
 
-### 🔗 Otros elementos
+### 🔗 Integración y despliegue
 
-- ✅ Implementación del Footer.
-- ✅ Enlace a GitHub.
-- ✅ Enlace a LinkedIn.
-- ✅ Organización del proyecto utilizando Bootstrap 5.
-- ✅ Organización de archivos y carpetas.
-- ✅ Control de versiones mediante Git.
+- ✅ Enlaces funcionales a repositorio y perfiles.
+- ✅ Despliegue continuo en GitHub Pages.
+- ✅ Control de versiones mediante Git y GitHub.
 
 ---
 
@@ -85,30 +71,23 @@ Actualmente se inicia la siguiente etapa, enfocada en implementar la lógica fun
 - HTML5
 - CSS3
 - Bootstrap 5
-- JavaScript
+- JavaScript (ES6+)
 - Google Fonts
 - Google Material Symbols
-- Git
-- GitHub
+- Git & GitHub
+- GitHub Pages
 
 ---
 
-# Planeación del proyecto
+## 📌 Planeación y enlaces del proyecto
 
-# Trello
-
-https://trello.com/invite/b/6a6ba8980ac96cc33a088662/ATTI8ac4d70b38d78bf3f39de13a9786d9c53F0272D7/planificador-de-tareas-web
-
----
-
-###  Diseño en Figma
-
-https://www.figma.com/design/R1Ds3DhB6BNKYU50Ng1cxK/Sin-t%C3%ADtulo?node-id=0-1&t=siyIXh6LpUFmIE3f-1
+- **Trello:** (https://trello.com/invite/b/6a6ba8980ac96cc33a088662/ATTI8ac4d70b38d78bf3f39de13a9786d9c53F0272D7/planificador-de-tareas-web)
+- **Figma:** (https://www.figma.com/design/R1Ds3DhB6BNKYU50Ng1cxK/Sin-t%C3%ADtulo?node-id=0-1&t=siyIXh6LpUFmIE3f-1)
+- **Demo en vivo:** (https://dargarciacol.github.io/Planificador-de-Tareas-Web/)
 
 ---
-###DEMO
-https://dargarciacol.github.io/Planificador-de-Tareas-Web/
-# Estructura del proyecto
+
+## 📂 Estructura del proyecto
 
 ```text
 Planificador-de-Tareas-Web/
@@ -118,8 +97,10 @@ Planificador-de-Tareas-Web/
 │   └── icons/
 │
 ├── css/
-│   └── style.css
-│   app.js
+│   └── styles.css
+│
+├── js/
+│   └── app.js
 │
 ├── pages/
 │   ├── hoy.html
@@ -128,6 +109,4 @@ Planificador-de-Tareas-Web/
 │   └── estadisticas.html
 │
 ├── index.html
-│
 └── README.md
-    app.js

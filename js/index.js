@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskForm = document.getElementById('taskForm');
     const taskList = document.getElementById('taskList');
 
-    // Manejo del formulario
     taskForm.addEventListener('submit', (e) => {
         e.preventDefault();
         
@@ -12,9 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const fecha = document.getElementById('fecha').value;
         const prioridad = document.getElementById('prioridad').value;
 
-        // Validaciones básicas
         if (!titulo || !descripcion || !fecha || !prioridad) {
-            // Activa las clases is-invalid de Bootstrap si están vacíos
             return;
         }
 
@@ -23,13 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTasks();
     });
 
-    // Función para renderizar el HTML dinámico
     function renderTasks() {
         taskList.innerHTML = '';
 
         taskManager.tasks.forEach(task => {
             const taskCard = document.createElement('div');
             taskCard.className = `card border-0 shadow-sm rounded-4 p-3 ${task.completed ? 'bg-light' : ''}`;
+            taskCard.setAttribute('data-task-id', task.id);
             
             taskCard.innerHTML = `
                 <div class="d-flex justify-content-between align-items-start">
@@ -47,8 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                 ${task.completed ? 'undo' : 'check'}
                             </span>
                         </button>
-                        <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${task.id}">
-                            <span class="material-symbols-outlined align-middle">delete</span>
+                        <button class="delete-button btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1" data-id="${task.id}">
+                            <span class="material-symbols-outlined fs-6">delete</span>
+                            <span>Eliminar</span>
                         </button>
                     </div>
                 </div>
@@ -56,7 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
             taskList.appendChild(taskCard);
         });
 
-        updateCounters();
+        if (typeof updateCounters === 'function') {
+            updateCounters();
+        }
     }
 
     function getPriorityBadge(priority) {
@@ -68,24 +68,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Delegación de eventos para botones dinámicos
     taskList.addEventListener('click', (e) => {
         const target = e.target.closest('button');
         if (!target) return;
 
-        const id = Number(target.dataset.id);
+        const parentTask = target.closest('[data-task-id]') || target.parentElement;
+        const taskId = Number(target.dataset.id || parentTask.dataset.taskId);
 
         if (target.classList.contains('toggle-btn')) {
-            taskManager.toggleTaskStatus(id);
+            taskManager.toggleTaskStatus(taskId);
+            taskManager.save();
             renderTasks();
         }
 
-        if (target.classList.contains('delete-btn')) {
-            taskManager.deleteTask(id);
+        if (target.classList.contains('delete-button') || target.classList.contains('delete-btn')) {
+            taskManager.deleteTask(taskId);
+            taskManager.save();
             renderTasks();
         }
     });
 
-    // Render inicial
     renderTasks();
 });

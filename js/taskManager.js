@@ -3,7 +3,7 @@ class TaskManager {
         this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     }
 
-    saveToLocalStorage() {
+    save() {
         localStorage.setItem('tasks', JSON.stringify(this.tasks));
     }
 
@@ -17,7 +17,7 @@ class TaskManager {
             completed: false
         };
         this.tasks.push(newTask);
-        this.saveToLocalStorage();
+        this.save();
         return newTask;
     }
 
@@ -25,11 +25,16 @@ class TaskManager {
         this.tasks = this.tasks.map(task => 
             task.id === id ? { ...task, completed: !task.completed } : task
         );
-        this.saveToLocalStorage();
+        this.save();
     }
 
-    deleteTask(id) {
-        this.tasks = this.tasks.filter(task => task.id !== id);
-        this.saveToLocalStorage();
+    deleteTask(taskId) {
+        const newTasks = [];
+        for (let task of this.tasks) {
+            if (task.id !== taskId) {
+                newTasks.push(task);
+            }
+        }
+        this.tasks = newTasks;
     }
 }
