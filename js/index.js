@@ -3,6 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskForm = document.getElementById('taskForm');
     const taskList = document.getElementById('taskList');
 
+    // Función auxiliar para prevenir inyección de código (XSS)
+    function escapeHTML(str) {
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
     taskForm.addEventListener('submit', (e) => {
         e.preventDefault();
         
@@ -28,14 +38,15 @@ document.addEventListener('DOMContentLoaded', () => {
             taskCard.className = `card border-0 shadow-sm rounded-4 p-3 ${task.completed ? 'bg-light' : ''}`;
             taskCard.setAttribute('data-task-id', task.id);
             
+            // Sanitizamos titulo y descripcion antes de inyectar en el HTML
             taskCard.innerHTML = `
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
-                        <h5 class="${task.completed ? 'text-decoration-line-through text-muted' : 'fw-semibold'}">${task.titulo}</h5>
-                        <p class="text-secondary small mb-2">${task.descripcion}</p>
+                        <h5 class="${task.completed ? 'text-decoration-line-through text-muted' : 'fw-semibold'}">${escapeHTML(task.titulo)}</h5>
+                        <p class="text-secondary small mb-2">${escapeHTML(task.descripcion)}</p>
                         <div class="d-flex gap-2 align-items-center">
-                            <span class="badge bg-secondary">${task.fecha}</span>
-                            <span class="badge ${getPriorityBadge(task.prioridad)}">${task.prioridad}</span>
+                            <span class="badge bg-secondary">${escapeHTML(task.fecha)}</span>
+                            <span class="badge ${getPriorityBadge(task.prioridad)}">${escapeHTML(task.prioridad)}</span>
                         </div>
                     </div>
                     <div class="d-flex gap-2">
@@ -77,16 +88,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (target.classList.contains('toggle-btn')) {
             taskManager.toggleTaskStatus(taskId);
-            taskManager.save();
+            // taskManager.save() se ejecuta automáticamente dentro del método
             renderTasks();
         }
 
         if (target.classList.contains('delete-button') || target.classList.contains('delete-btn')) {
             taskManager.deleteTask(taskId);
-            taskManager.save();
+            // taskManager.save() se ejecuta automáticamente dentro del método
             renderTasks();
         }
     });
 
+    // Carga inicial al refrescar la página
     renderTasks();
 });
