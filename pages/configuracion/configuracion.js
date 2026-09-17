@@ -6,6 +6,32 @@
 const API_USERS_URL = 'https://backend-planificador-de-tareas.onrender.com/api/users';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Mostrar y sincronizar el nombre real del usuario de forma uniforme
+    const userNameElement = document.getElementById("user-name") || document.querySelector('.navbar .fw-medium');
+    const storedName = localStorage.getItem('user_name');
+    if (userNameElement) {
+        userNameElement.textContent = storedName ? storedName : "Usuario";
+    }
+
+    // 2. Configuración unificada y segura del botón de Cerrar Sesión (Evita Error 500)
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            
+            // Limpieza total del almacenamiento local del navegador
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_name');
+            localStorage.removeItem('user_id');
+            localStorage.removeItem('tasks');
+
+            // Redirección inteligente al login según la ubicación de la página actual
+            const isInSubfolder = window.location.pathname.includes('/pages/');
+            window.location.href = isInSubfolder ? '../../login.html' : 'login.html';
+        });
+    }
+
+    // 3. Cargar configuraciones guardadas y eventos propios de la vista
     loadSavedSettings();
     initEvents();
 });
@@ -37,11 +63,11 @@ function initEvents() {
                 return;
             }
 
-            // 1. Actualización en localStorage (Respuesta inmediata)
-            localStorage.setItem('user_profile_name', userName);
+            // 1. Actualización en localStorage usando 'user_name' para unificarlo con el resto de la app
+            localStorage.setItem('user_name', userName);
             localStorage.setItem('user_profile_email', userEmail);
             
-            const navbarUserName = document.querySelector('.navbar .fw-medium');
+            const navbarUserName = document.querySelector('.navbar .fw-medium') || document.getElementById("user-name");
             if (navbarUserName) navbarUserName.textContent = userName;
 
             // 2. Persistencia en Backend mediante PUT /api/users/{id}
@@ -101,7 +127,8 @@ function initEvents() {
 }
 
 function loadSavedSettings() {
-    const savedName = localStorage.getItem('user_profile_name');
+    // Soportamos tanto 'user_name' como el antiguo por compatibilidad
+    const savedName = localStorage.getItem('user_name') || localStorage.getItem('user_profile_name');
     const savedEmail = localStorage.getItem('user_profile_email');
     const savedDarkMode = localStorage.getItem('user_pref_dark_mode') === 'true';
     const savedNotifications = localStorage.getItem('user_pref_notifications') !== 'false';
@@ -110,7 +137,7 @@ function loadSavedSettings() {
         const nameInput = document.getElementById('configUserName');
         if (nameInput) nameInput.value = savedName;
         
-        const navbarUserName = document.querySelector('.navbar .fw-medium');
+        const navbarUserName = document.querySelector('.navbar .fw-medium') || document.getElementById("user-name");
         if (navbarUserName) navbarUserName.textContent = savedName;
     }
 

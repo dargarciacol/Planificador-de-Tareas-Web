@@ -8,6 +8,32 @@ const API_URL = 'https://backend-planificador-de-tareas.onrender.com/api/tasks';
 let completedTasks = [];
 
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Mostrar el nombre real del usuario guardado en el login
+    const userNameElement = document.getElementById("user-name") || document.querySelector('.navbar .fw-medium');
+    const storedName = localStorage.getItem('user_name');
+    if (userNameElement) {
+        userNameElement.textContent = storedName ? storedName : "Usuario";
+    }
+
+    // 2. Configuración unificada y segura del botón de Cerrar Sesión (Evita Error 500)
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            
+            // Limpieza total del almacenamiento local del navegador
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_name');
+            localStorage.removeItem('user_id');
+            localStorage.removeItem('tasks');
+
+            // Redirección inteligente al login según la ubicación de la página actual
+            const isInSubfolder = window.location.pathname.includes('/pages/');
+            window.location.href = isInSubfolder ? '../../login.html' : 'login.html';
+        });
+    }
+
+    // 3. Funciones originales de la vista de estadísticas
     fetchAndProcessData();
     document.getElementById('exportExcelBtn')?.addEventListener('click', exportToExcel);
 });
