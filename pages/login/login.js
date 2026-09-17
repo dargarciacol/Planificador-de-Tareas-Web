@@ -1,5 +1,5 @@
 /* ==========================================================================
-   js/login.js - Autenticación Real separada (Registro y Login limpios)
+   js/login.js - Autenticación Real Completa (Registro y Login Blindados)
    ========================================================================== */
 
 const API_AUTH_URL = 'https://backend-planificador-de-tareas.onrender.com/api/auth'; // Cambia a /api/users si tus endpoints son esos
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 4. Procesar Login: SOLICITA EL JWT REAL Y ENTRA AL INICIO
+    // 4. Procesar Login: SOLICITA EL JWT REAL Y ENTRA AL INICIO (Blindado para JSON o Texto Plano)
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -110,21 +110,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error('Correo o contraseña incorrectos');
                 }
 
-                const data = await response.json();
-                
-                // Capturar el token JWT que devuelve Java
-                const token = data.token || data.accessToken || data;
+                // Leer la respuesta de forma segura (soporta JSON o Texto plano del backend)
+                const responseText = await response.text();
+                let token = '';
+                let userName = email.split('@')[0];
+
+                try {
+                    const data = JSON.parse(responseText);
+                    token = data.token || data.accessToken || data.jwt;
+                    if (data.name) userName = data.name;
+                    if (!token && typeof data === 'string') token = data;
+                } catch (err) {
+                    token = responseText.trim();
+                }
 
                 if (token) {
-                    // Guardar token REAL en localStorage
+                    // GUARDAR EL TOKEN JWT REAL
                     localStorage.setItem('auth_token', token);
-                    localStorage.setItem('user_profile_name', data.name || email.split('@')[0]);
+                    localStorage.setItem('user_profile_name', userName);
                     localStorage.setItem('user_profile_email', email);
 
-                    // Redirigir de manera limpia al sistema principal
+                    console.log("✅ Token JWT obtenido y guardado con éxito.");
+
+                    // Redirigir al sistema principal
                     window.location.href = '../../index.html';
                 } else {
-                    throw new Error('El servidor no devolvió un token válido.');
+                    throw new Error('El servidor respondió pero no se pudo extraer el token.');
                 }
 
             } catch (error) {
