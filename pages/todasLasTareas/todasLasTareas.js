@@ -1,6 +1,6 @@
 /* ==========================================================================
    pages/todas/todas.js
-   Lógica para listar, filtrar, editar y eliminar tareas (Render API en Línea)
+   Lógica para listar, filtrar, editar y eliminar tareas (Render API + Diagnóstico JWT)
    ========================================================================== */
 
 const API_URL = 'https://backend-planificador-de-tareas.onrender.com/api/tasks';
@@ -32,9 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchAllTasks();
 });
 
-// Función auxiliar para obtener cabeceras con JWT
+// Función auxiliar para obtener cabeceras con JWT y validación de sesión
 function getHeaders() {
     const token = localStorage.getItem('auth_token');
+    
+    if (!token) {
+        console.warn("⚠️ ALERTA: No se encontró 'auth_token' en localStorage. Las peticiones al backend fallarán con error 403.");
+    }
+
     const headers = {
         'Content-Type': 'application/json'
     };
@@ -73,7 +78,7 @@ function setStatusFilter(btn, filterType) {
     applyFilters();
 }
 
-// Consultar todas las tareas directamente desde el backend en línea
+// Consultar todas las tareas directamente desde el backend con manejo de errores detallado
 async function fetchAllTasks() {
     try {
         const response = await fetch(API_URL, {
@@ -81,7 +86,9 @@ async function fetchAllTasks() {
             headers: getHeaders()
         });
         
-        if (!response.ok) throw new Error('API offline');
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status} - ${response.statusText}`);
+        }
 
         const data = await response.json();
         
@@ -95,7 +102,7 @@ async function fetchAllTasks() {
         }));
 
     } catch (error) {
-        console.error('Error al conectar con la API (Todas las tareas):', error);
+        console.error('❌ Error al conectar con la API (Todas las tareas):', error.message);
         allTasks = [];
     }
 
@@ -144,7 +151,7 @@ function renderTasks(tasks) {
             <div class="text-center py-5">
                 <span class="material-symbols-outlined text-secondary" style="font-size: 58px;">inbox</span>
                 <h5 class="fw-semibold mt-3 text-dark">No se encontraron tareas</h5>
-                <p class="text-muted small">Crea algunas tareas desde el inicio o cambia los filtros de búsqueda.</p>
+                <p class="text-muted small">Crea algunas tareas desde el inicio o verifica la conexión con el servidor.</p>
             </div>
         `;
         return;
@@ -247,7 +254,7 @@ async function handleEditFormSubmit(e) {
 
         if (response.ok) {
             if (editTaskModal) editTaskModal.hide();
-            await fetchAllTasks(); // Recargar datos sincronizados
+            await fetchAllTasks();
         }
     } catch (err) {
         console.error('Error al actualizar la tarea:', err);
