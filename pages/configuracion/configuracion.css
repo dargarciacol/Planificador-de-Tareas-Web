@@ -1,0 +1,23 @@
+/* ==========================================================================
+   pages/configuracion/configuracion.css
+   Estilos optimizados para la vista de usuario final
+   ========================================================================== */
+
+.card.border {
+    border-color: var(--border) !important;
+    background: var(--white);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card.border:hover {
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(8, 7, 77, 0.15) !important;
+}

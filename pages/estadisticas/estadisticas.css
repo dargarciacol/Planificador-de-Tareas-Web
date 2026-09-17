@@ -1,0 +1,51 @@
+/* ==========================================================================
+   pages/estadisticas/estadisticas.css
+   Estilos específicos para KPIs, Barras de Progreso y Tabla de Exportación
+   ========================================================================== */
+
+.kpi-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-sm) !important;
+}
+
+/* Barras de Progreso Personalizadas */
+.progress-custom {
+    height: 12px;
+    border-radius: 10px;
+    background-color: var(--border);
+    overflow: hidden;
+}
+
+.progress-custom .progress-bar {
+    border-radius: 10px;
+    transition: width 0.6s ease-in-out;
+}
+
+/* Tabla de Vista Previa */
+.table th {
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+}
+
+.table td {
+    font-size: 0.88rem;
+}
+
+#exportExcelBtn {
+    background-color: #198754 !important;
+    border-color: #198754 !important;
+    transition: all 0.25s ease;
+}
+
+#exportExcelBtn:hover {
+    background-color: #146c43 !important;
+    border-color: #13653f !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(25, 135, 84, 0.3) !important;
+}

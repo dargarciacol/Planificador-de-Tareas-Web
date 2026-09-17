@@ -1,0 +1,64 @@
+/* ==========================================================================
+   ESTILOS ESPECÍFICOS: TAREAS COMPLETADAS
+   ========================================================================== */
+
+/* Header & Stats Banner */
+.completed-header .badge {
+    font-size: 0.85rem;
+    letter-spacing: 0.3px;
+}
+
+/* Tarjetas de Tareas Completadas */
+.completed-task-card {
+    border: 1px solid var(--border) !important;
+    border-left: 5px solid var(--secondary) !important;
+    background: var(--white);
+    border-radius: var(--radius) !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.completed-task-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md) !important;
+}
+
+/* Estilo de texto tachado suave */
+.completed-title {
+    text-decoration: line-through;
+    color: var(--muted) !important;
+    font-weight: 600;
+}
+
+/* Badges de Prioridad para Completadas */
+.badge-priority-alta {
+    background: #f8d7da !important;
+    color: var(--danger) !important;
+    border: 1px solid #f5c2c7;
+}
+
+.badge-priority-media {
+    background: #fff0c7 !important;
+    color: #8a6500 !important;
+    border: 1px solid #ffe69c;
+}
+
+.badge-priority-baja {
+    background: #e7f0f3 !important;
+    color: var(--primary-light) !important;
+    border: 1px solid #b8dae9;
+}
+
+/* Botón de Reabrir Tarea */
+.btn-reopen {
+    color: var(--warning);
+    border-color: var(--warning);
+    border-radius: 20px;
+    font-weight: 500;
+    transition: all 0.25s ease;
+}
+
+.btn-reopen:hover {
+    background: var(--warning);
+    color: var(--white);
+    box-shadow: 0 4px 12px rgba(240, 173, 0, 0.25);
+}

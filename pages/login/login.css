@@ -1,0 +1,197 @@
+/* ==========================================================================
+   login.css - Pantalla Completa 50vw/50vw con Imagen Completa y Centrada
+   ========================================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+    background-color: #ffffff;
+}
+
+/* Contenedor principal a pantalla completa */
+.auth-fullscreen {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+/* Fila flexible */
+.auth-row {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    transition: flex-direction 0.4s ease-in-out;
+}
+
+/* Mitad 1: Formulario */
+.form-column {
+    width: 50vw;
+    height: 100vh;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 4rem;
+}
+
+.auth-card-content {
+    width: 100%;
+    max-width: 420px;
+}
+
+/* Mitad 2: Columna de la Imagen */
+.image-column {
+    width: 50vw;
+    height: 100vh;
+    background-color: #f1f5f9; /* Fondo suave para los bordes si la imagen es vertical */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem; /* Le da espacio para que la imagen se achique y no pegue a los bordes */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Contenedores individuales de las imágenes */
+#loginImageContainer,
+#registerImageContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* REGLA CLAVE PARA QUE LA IMAGEN SE ACHIQUE Y SE VEA COMPLETA */
+.auth-img {
+    max-width: 90%;
+    max-height: 90%;
+    width: auto;
+    height: auto;
+    object-fit: contain !important; /* Muestra TODA la imagen sin recortar nada */
+    object-position: center center !important; /* Centrado absoluto */
+    display: block;
+    border-radius: 16px; /* Sombra y bordes suaves para integrarla limpio */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* Inversión al presionar 'Crear cuenta' */
+.auth-row.show-register {
+    flex-direction: row-reverse;
+}
+
+/* Botones principales y controles */
+.btn-primary {
+    background-color: #08074d;
+    border-color: #08074d;
+}
+
+.btn-primary:hover {
+    background-color: #12106e;
+    border-color: #12106e;
+}
+
+.social-btn {
+    border-color: #d1d5db;
+    color: #1f2937;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+.social-btn:hover {
+    background-color: #f9fafb;
+    border-color: #9ca3af;
+}
+
+.input-group-text {
+    border-color: #d1d5db;
+    color: #08074d;
+}
+
+.form-control {
+    border-color: #d1d5db;
+    padding: 0.65rem 0.75rem;
+}
+
+.form-control:focus {
+    border-color: #08074d;
+    box-shadow: 0 0 0 0.2rem rgba(8, 7, 77, 0.15);
+}
+
+/* Adaptación móvil */
+@media (max-width: 991px) {
+    .form-column {
+        width: 100vw;
+        padding: 2rem 1.5rem;
+    }
+    .image-column {
+        display: none;
+    }
+}
+/* Normalizar tamaño de tarjeta y contenedor de formulario */
+.auth-card-content {
+    width: 100%;
+    max-width: 440px; /* Aumentamos ligeramente para mayor presencia */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Encabezado uniforme */
+.auth-card-content h3 {
+    font-size: 1.75rem; /* Título más prominente */
+}
+
+/* Formulario e Inputs simétricos */
+.form-label {
+    font-size: 0.95rem;
+    color: #1e293b;
+}
+
+.form-control {
+    border-color: #cbd5e1;
+    padding: 0.75rem 1rem; /* Mismo padding para todos los inputs */
+    font-size: 0.95rem;
+}
+
+.input-group-text {
+    border-color: #cbd5e1;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    color: #08074d;
+}
+
+/* Botones con el mismo tamaño tipográfico */
+.btn-primary {
+    background-color: #08074d;
+    border-color: #08074d;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    font-size: 1rem;
+}
+
+.btn-primary:hover {
+    background-color: #12106e;
+    border-color: #12106e;
+}
+
+/* Botones sociales alineados */
+.social-btn {
+    border-color: #cbd5e1;
+    color: #1f2937;
+    font-size: 0.95rem;
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
+}
+
+.social-btn:hover {
+    background-color: #f8fafc;
+    border-color: #94a3b8;
+}

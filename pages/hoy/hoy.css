@@ -1,0 +1,72 @@
+/* ==========================================================================
+   pages/hoy/hoy.css
+   Estilos específicos para el módulo de Tareas de Hoy
+   ========================================================================== */
+
+.today-task-card {
+    border: 1px solid var(--border) !important;
+    border-left: 5px solid var(--primary-light) !important;
+    border-radius: var(--radius) !important;
+    background: var(--white);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.today-task-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.today-task-card.is-completed {
+    border-left-color: var(--secondary) !important;
+    background-color: #fcfdfe;
+}
+
+.today-task-card.is-completed .task-title {
+    text-decoration: line-through;
+    color: var(--muted) !important;
+}
+
+/* Checkbox interactivo */
+.task-check-btn {
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.task-check-btn .material-symbols-outlined {
+    font-size: 26px;
+    color: var(--muted);
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.task-check-btn:hover .material-symbols-outlined {
+    transform: scale(1.1);
+    color: var(--primary);
+}
+
+.task-check-btn.checked .material-symbols-outlined {
+    color: var(--primary) !important;
+}
+
+/* Badges de Prioridad */
+.badge-alta {
+    background: #f8d7da !important;
+    color: var(--danger) !important;
+    border: 1px solid #f5c2c7;
+}
+
+.badge-media {
+    background: #fff0c7 !important;
+    color: #8a6500 !important;
+    border: 1px solid #ffe69c;
+}
+
+.badge-baja {
+    background: #e7f0f3 !important;
+    color: var(--primary-light) !important;
+    border: 1px solid #b8dae9;
+}

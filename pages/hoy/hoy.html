@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Hoy | Planificador de Tareas</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+
+    <!-- CSS Global y Específico -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="./hoy.css">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <header>
+        <nav class="navbar bg-white border-bottom shadow-sm py-3">
+            <div class="container-fluid">
+
+                <!-- Logo -->
+                <a href="../../index.html" class="navbar-brand d-flex align-items-center gap-3">
+                    <img src="../../assets/images/img1.svg" alt="Logo" width="48" height="48">
+                    <h3 class="m-0 fw-semibold">Planificador de Tareas</h3>
+                </a>
+
+                <!-- Acciones del navbar -->
+                <div class="d-flex align-items-center gap-3">
+
+                    <!-- Buscador -->
+                    <div class="input-group">
+                        <span class="input-group-text bg-white">
+                            <span class="material-symbols-outlined">search</span>
+                        </span>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Buscar tarea de hoy...">
+                    </div>
+
+                    <!-- Modo oscuro -->
+                    <button class="btn btn-light border rounded-circle" title="Modo Oscuro">
+                        <span class="material-symbols-outlined">dark_mode</span>
+                    </button>
+
+                    <!-- Usuario -->
+                    <div class="dropdown">
+    <button class="btn border rounded-pill px-3 py-2 d-flex align-items-center gap-2 bg-white" 
+            type="button" id="userMenuBtn" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="material-symbols-outlined text-primary">account_circle</span>
+        <span class="fw-medium text-dark">Santiago</span>
+        <span class="material-symbols-outlined text-secondary">keyboard_arrow_down</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-4 mt-2" aria-labelledby="userMenuBtn">
+        <li>
+            <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="./pages/configuracion/configuracion.html">
+                <span class="material-symbols-outlined fs-5">settings</span>
+                <span>Mi Perfil / Ajustes</span>
+            </a>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+            <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger" href="./pages/login/login.html">
+                <span class="material-symbols-outlined fs-5">logout</span>
+                <span>Cerrar Sesión</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+                </div>
+
+            </div>
+        </nav>
+    </header>
+
+
+    <!-- ================= CONTENIDO PRINCIPAL ================= -->
+    <main class="container-fluid my-4">
+        <div class="row g-4">
+
+            <!-- ================= SIDEBAR ================= -->
+            <div class="col-lg-3">
+                <aside class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body d-flex flex-column">
+
+                        <div>
+                            <h6 class="text-uppercase text-secondary fw-semibold mb-4">Menú</h6>
+
+                            <div class="list-group list-group-flush">
+                                <!-- Inicio -->
+                                <a href="../../index.html" class="list-group-item list-group-item-action rounded-3 mb-2">
+                                    <span class="material-symbols-outlined me-2">home</span>
+                                    Inicio
+                                </a>
+
+                                <!-- Hoy (ACTIVE) -->
+                                <a href="./hoy.html" class="list-group-item list-group-item-action active rounded-3 mb-2">
+                                    <span class="material-symbols-outlined me-2">today</span>
+                                    Hoy
+                                </a>
+
+                                <!-- Todas las tareas -->
+                                <a href="../todasLasTareas/todasLasTareas.html" class="list-group-item list-group-item-action rounded-3 mb-2">
+                                    <span class="material-symbols-outlined me-2">checklist</span>
+                                    Todas las tareas
+                                </a>
+
+                                <!-- Completadas -->
+                                <a href="../completadas/completadas.html" class="list-group-item list-group-item-action rounded-3 mb-2">
+                                    <span class="material-symbols-outlined me-2">task_alt</span>
+                                    Completadas
+                                </a>
+
+                                <!-- Estadísticas -->
+                                <a href="../estadisticas/estadisticas.html" class="list-group-item list-group-item-action rounded-3">
+                                    <span class="material-symbols-outlined me-2">monitoring</span>
+                                    Estadísticas
+                                </a>
+                                
+                            </div>
+
+                            <hr>
+
+                            <!-- Configuración -->
+                            <div class="list-group list-group-flush">
+                                <a href="../configuracion/configuracion.html" class="list-group-item list-group-item-action rounded-3">
+                                    <span class="material-symbols-outlined me-2">settings</span>
+                                    Configuración
+                                     </a>
+                            </div>
+                        </div>
+
+                        <!-- Consejo del día -->
+                        <div class="mt-4">
+                            <div class="card border-0 bg-light rounded-4">
+                                <div class="card-body">
+                                    <span class="material-symbols-outlined text-primary fs-2">lightbulb</span>
+                                    <h6 class="fw-bold mt-2">Enfoque Diario</h6>
+                                    <p class="text-secondary small mb-0">
+                                        Concéntrate en resolver primero las tareas de hoy para mantener un ritmo constante de productividad.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </aside>
+            </div>
+
+
+            <!-- ================= VISTA PRINCIPAL (TAREAS DE HOY) ================= -->
+            <div class="col-lg-9">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+
+                        <!-- ENCABEZADO -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h4 class="fw-semibold mb-1 d-flex align-items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary fs-2">today</span>
+                                    Tareas para Hoy
+                                </h4>
+                                <small id="currentDateText" class="text-secondary">Cargando fecha actual...</small>
+                            </div>
+
+                            <!-- Contador -->
+                            <div class="bg-primary-subtle border border-primary-subtle text-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2">
+                                <span class="fw-medium">Pendientes hoy:</span>
+                                <span id="todayCount" class="badge bg-primary rounded-pill fs-6">0</span>
+                            </div>
+                        </div>
+
+                        <!-- FILTROS -->
+                        <div class="d-flex gap-2 mb-4">
+                            <button class="btn btn-primary rounded-pill" id="filterAll">Todas</button>
+                            <button class="btn btn-outline-secondary rounded-pill" id="filterPending">Pendientes</button>
+                            <button class="btn btn-outline-secondary rounded-pill" id="filterCompleted">Completadas</button>
+                        </div>
+
+                        <!-- LISTA DINÁMICA DE TAREAS -->
+                        <div id="todayTaskList" class="d-flex flex-column gap-3">
+                            <div class="text-center py-5">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Cargando tareas de hoy...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+
+    <!-- ================= MODAL EDITAR TAREA ================= -->
+    <div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold text-dark d-flex align-items-center gap-2" id="editTaskModalLabel">
+                        <span class="material-symbols-outlined text-primary">edit_square</span>
+                        Editar Tarea
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="editTaskForm">
+                        <input type="hidden" id="editTaskId">
+                        
+                        <div class="mb-3">
+                            <label for="editTaskName" class="form-label fw-medium">Tarea</label>
+                            <input type="text" class="form-control" id="editTaskName" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editTaskDescription" class="form-label fw-medium">Descripción</label>
+                            <textarea class="form-control" id="editTaskDescription" rows="3"></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editTaskDueDate" class="form-label fw-medium">Fecha</label>
+                                <input type="date" class="form-control" id="editTaskDueDate" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editTaskPriority" class="form-label fw-medium">Prioridad</label>
+                                <select class="form-select" id="editTaskPriority" required>
+                                    <option value="Alta">Alta</option>
+                                    <option value="Media">Media</option>
+                                    <option value="Baja">Baja</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 mt-3">
+                            <button type="button" class="btn btn-light border rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary rounded-pill px-4">Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="border-top mt-5 py-3">
+        <div class="container-fluid px-4">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="material-symbols-outlined">copyright</span>
+                    <small class="mb-0">2026 Planificador de Tareas. Todos los derechos reservados.</small>
+                </div>
+                <div class="d-flex align-items-center gap-4">
+                    <a href="https://github.com/dargarciacol" target="_blank" class="text-decoration-none d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined">code</span><span>GitHub</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/santiagogarcia-backend-developer-python-django-nodejs-java-restapi-mongodb-mysql" target="_blank" class="text-decoration-none d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined">business_center</span><span>LinkedIn</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script de Hoy -->
+    <script src="./hoy.js"></script>
+</body>
+
+</html>
