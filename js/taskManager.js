@@ -1,3 +1,7 @@
+/* ==========================================================================
+   js/taskManager.js - Gestor de Tareas Sincronizado con Render y JWT Real
+   ========================================================================== */
+
 class TaskManager {
     constructor() {
         // URL desplegada en Render
@@ -5,15 +9,22 @@ class TaskManager {
         this.tasks = this.load();
     }
 
-    // Obtener cabeceras con autenticación JWT
+    // Obtener cabeceras con autenticación JWT segura
     getHeaders() {
         const token = localStorage.getItem('auth_token');
+        
+        if (!token) {
+            console.warn("⚠️ [TaskManager] No se encontró 'auth_token' en localStorage. La petición al backend dará 403.");
+        }
+
         const headers = {
             'Content-Type': 'application/json'
         };
+        
         if (token) {
             headers['Authorization'] = `Bearer ${token}`;
         }
+        
         return headers;
     }
 
@@ -41,14 +52,21 @@ class TaskManager {
         }
     }
 
-    // 3. Obtener todas las tareas (Consumo API con fallback local)
+    // 3. Obtener todas las tareas (Consumo API con diagnóstico de JWT)
     async fetchTasksFromApi() {
         try {
             const response = await fetch(this.apiUrl, {
                 method: 'GET',
                 headers: this.getHeaders()
             });
-            if (!response.ok) throw new Error('Error al conectar con la API');
+            
+            if (response.status === 401 || response.status === 403) {
+                throw new Error(`Acceso denegado (${response.status}). Token JWT inválido, expirado o ausente.`);
+            }
+
+            if (!response.ok) {
+                throw new Error(`Error al conectar con la API: ${response.status}`);
+            }
             
             const apiTasks = await response.json();
             
@@ -65,8 +83,8 @@ class TaskManager {
             this.save();
             return this.tasks;
         } catch (error) {
-            console.warn('Backend offline o inaccesible. Usando datos guardados en localStorage:', error);
-            return this.tasks;
+            console.error('❌ Error al sincronizar con la API:', error.message);
+            return this.tasks; // Fallback a datos locales si falla
         }
     }
 
@@ -104,6 +122,8 @@ class TaskManager {
                 // Actualizar el ID temporal por el ID asignado por PostgreSQL
                 newTask.id = createdTask.id;
                 this.save();
+            } else {
+                console.warn(`⚠️ Servidor rechazó el guardado (Estado: ${response.status})`);
             }
         } catch (error) {
             console.warn('Guardado en API falló. Se mantiene la copia local:', error);
