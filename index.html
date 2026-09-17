@@ -9,12 +9,11 @@
     <title>Planificador de Tareas</title>
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Google Icons -->
@@ -67,14 +66,14 @@
 
                         </span>
 
-                        <input type="text" class="form-control" placeholder="Buscar tarea...">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Buscar tarea...">
 
                     </div>
 
 
                     <!-- Modo oscuro -->
 
-                    <button class="btn btn-light border rounded-circle">
+                    <button id="darkModeBtn" class="btn btn-light border rounded-circle">
 
                         <span class="material-symbols-outlined">
                             dark_mode
@@ -86,28 +85,28 @@
                     <!-- Usuario -->
 
                     <div class="dropdown">
-    <button class="btn border rounded-pill px-3 py-2 d-flex align-items-center gap-2 bg-white" 
-            type="button" id="userMenuBtn" data-bs-toggle="dropdown" aria-expanded="false">
-        <span class="material-symbols-outlined text-primary">account_circle</span>
-        <span class="fw-medium text-dark">Santiago</span>
-        <span class="material-symbols-outlined text-secondary">keyboard_arrow_down</span>
-    </button>
-    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-4 mt-2" aria-labelledby="userMenuBtn">
-        <li>
-            <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="./pages/configuracion/configuracion.html">
-                <span class="material-symbols-outlined fs-5">settings</span>
-                <span>Mi Perfil / Ajustes</span>
-            </a>
-        </li>
-        <li><hr class="dropdown-divider"></li>
-        <li>
-            <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger" href="./pages/login/login.html">
-                <span class="material-symbols-outlined fs-5">logout</span>
-                <span>Cerrar Sesión</span>
-            </a>
-        </li>
-    </ul>
-</div>
+                        <button class="btn border rounded-pill px-3 py-2 d-flex align-items-center gap-2 bg-white" 
+                                type="button" id="userMenuBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="material-symbols-outlined text-primary">account_circle</span>
+                            <span class="fw-medium text-dark">Usuario</span>
+                            <span class="material-symbols-outlined text-secondary">keyboard_arrow_down</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-4 mt-2" aria-labelledby="userMenuBtn">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="./pages/configuracion/configuracion.html">
+                                    <span class="material-symbols-outlined fs-5">settings</span>
+                                    <span>Mi Perfil / Ajustes</span>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger" href="./pages/login/login.html">
+                                    <span class="material-symbols-outlined fs-5">logout</span>
+                                    <span>Cerrar Sesión</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
 
                 </div>
 
@@ -221,7 +220,7 @@
                               <a href="./pages/configuracion/configuracion.html" class="list-group-item list-group-item-action rounded-3">
                                     <span class="material-symbols-outlined me-2">settings</span>
                                     Configuración
-                                     </a>
+                               </a>
 
                             </div>
 
@@ -305,7 +304,7 @@
 
                                 </label>
 
-                                <input type="text" id="titulo" name="titulo" class="form-control" placeholder="Ingrese el título">
+                                <input type="text" id="titulo" name="titulo" class="form-control" placeholder="Ingrese el título" required>
 
                                 <div id="tareaError" class="invalid-feedback">
 
@@ -352,7 +351,7 @@
 
                                     </label>
 
-                                    <input type="date" id="fecha" name="fecha" class="form-control">
+                                    <input type="date" id="fecha" name="fecha" class="form-control" required>
 
                                     <div id="fechaError" class="invalid-feedback">
 
@@ -373,7 +372,7 @@
 
                                     </label>
 
-                                    <select id="prioridad" name="prioridad" class="form-select">
+                                    <select id="prioridad" name="prioridad" class="form-select" required>
 
                                         <option value="" selected disabled>
 
@@ -463,7 +462,7 @@
 
                                             </div>
 
-                                            <h3 class="fw-bold">
+                                            <h3 id="countPending" class="fw-bold">
                                                 0
                                             </h3>
 
@@ -494,7 +493,7 @@
 
                                             </div>
 
-                                            <h3 class="fw-bold">
+                                            <h3 id="countCompleted" class="fw-bold">
                                                 0
                                             </h3>
 
@@ -525,7 +524,7 @@
 
                                             </div>
 
-                                            <h3 class="fw-bold">
+                                            <h3 id="countToday" class="fw-bold">
                                                 0
                                             </h3>
 
@@ -587,19 +586,19 @@
 
                         <div class="d-flex gap-2 mb-4">
 
-                            <button class="btn btn-primary rounded-pill">
+                            <button id="filterAll" class="btn btn-primary rounded-pill">
 
                                 Todas
 
                             </button>
 
-                            <button class="btn btn-outline-secondary rounded-pill">
+                            <button id="filterPending" class="btn btn-outline-secondary rounded-pill">
 
                                 Pendientes
 
                             </button>
 
-                            <button class="btn btn-outline-secondary rounded-pill">
+                            <button id="filterCompleted" class="btn btn-outline-secondary rounded-pill">
 
                                 Completadas
 
@@ -612,10 +611,7 @@
 
                         <div id="taskList" class="d-flex flex-column gap-3">
 
-                            <!--
-                                Las nuevas tareas serán creadas
-                                automáticamente por JavaScript.
-                            -->
+                            <!-- Las tareas serán insertadas dinámicamente por js/app.js -->
 
                         </div>
 
@@ -809,16 +805,15 @@
 
     <!-- ================= BOOTSTRAP JAVASCRIPT ================= -->
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
     </script>
 
 
     <!-- ================= JAVASCRIPT DEL PROYECTO ================= -->
 
+    <!-- Cargar solo la clase de gestión y el controlador de la vista principal -->
     <script src="./js/taskManager.js"></script>
-    
     <script src="./js/index.js"></script>
-    <script src="./pages/login/login.js"></script>
 
 </body>
 
