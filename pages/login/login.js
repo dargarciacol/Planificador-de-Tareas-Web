@@ -1,6 +1,8 @@
 /* ==========================================================================
-   js/login.js - Lógica de Autenticación, Transición y Persistencia
+   js/login.js - Autenticación Real separada (Registro y Login limpios)
    ========================================================================== */
+
+const API_AUTH_URL = 'https://backend-planificador-de-tareas.onrender.com/api/auth'; // Cambia a /api/users si tus endpoints son esos
 
 document.addEventListener('DOMContentLoaded', () => {
     const authRow = document.getElementById('authRow');
@@ -17,14 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnGoogleAuth = document.getElementById('btnGoogleAuth');
     const btnMicrosoftAuth = document.getElementById('btnMicrosoftAuth');
 
-    // 1. Transición a Crear Cuenta (Formulario Derecha | Imagen Registro Izquierda)
+    // 1. Transición a Crear Cuenta
     if (btnGoToRegister) {
         btnGoToRegister.addEventListener('click', () => {
             authRow.classList.add('show-register');
             loginForm.classList.add('d-none');
             registerForm.classList.remove('d-none');
 
-            // Alternar contenedores de imagen
             if (loginImageContainer) loginImageContainer.classList.add('d-none');
             if (registerImageContainer) registerImageContainer.classList.remove('d-none');
 
@@ -34,14 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. Transición a Iniciar Sesión (Formulario Izquierda | Imagen Login Derecha)
+    // 2. Transición a Iniciar Sesión
     if (btnGoToLogin) {
         btnGoToLogin.addEventListener('click', () => {
             authRow.classList.remove('show-register');
             registerForm.classList.add('d-none');
             loginForm.classList.remove('d-none');
 
-            // Alternar contenedores de imagen
             if (registerImageContainer) registerImageContainer.classList.add('d-none');
             if (loginImageContainer) loginImageContainer.classList.remove('d-none');
 
@@ -51,86 +51,99 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. Procesar Formulario de Registro (Guarda en array de usuarios)
+    // 3. Procesar Registro: SOLO CREA LA CUENTA Y DEVUELVE AL LOGIN
     if (registerForm) {
-        registerForm.addEventListener('submit', (e) => {
+        registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim().toLowerCase();
             const password = document.getElementById('regPassword').value;
 
-            if (name && email && password) {
-                // Obtener lista previa de usuarios o inicializar un arreglo vacío
-                const users = JSON.parse(localStorage.getItem('registered_users')) || [];
+            if (!name || !email || !password) return;
 
-                // Verificar si el correo ya existe
-                const userExists = users.some(u => u.email === email);
-                if (userExists) {
-                    alert('El correo electrónico ya está registrado. Intenta iniciar sesión.');
-                    return;
+            try {
+                const response = await fetch(`${API_AUTH_URL}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'No se pudo registrar el usuario');
                 }
 
-                // Guardar nuevo usuario en la base de datos local
-                const newUser = { name, email, password };
-                users.push(newUser);
-                localStorage.setItem('registered_users', JSON.stringify(users));
+                alert('¡Cuenta creada con éxito! Ahora inicia sesión con tus datos.');
+                
+                // Limpiar formulario y forzar transición limpia a la vista de login
+                registerForm.reset();
+                if (btnGoToLogin) {
+                    btnGoToLogin.click(); // Esto activa el botón para mostrar el login
+                }
 
-                // Establecer la sesión activa
-                localStorage.setItem('auth_token', 'session_active_token_' + Date.now());
-                localStorage.setItem('user_profile_name', name);
-                localStorage.setItem('user_profile_email', email);
-
-                // Redirigir a la raíz
-                window.location.href = '../../index.html';
+            } catch (error) {
+                console.error('Error en registro:', error);
+                alert('Error al registrarse: ' + error.message);
             }
         });
     }
 
-    // 4. Procesar Formulario de Iniciar Sesión (Valida contra registered_users)
+    // 4. Procesar Login: SOLICITA EL JWT REAL Y ENTRA AL INICIO
     if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const emailInput = document.getElementById('loginEmail').value.trim().toLowerCase();
-            const passwordInput = document.getElementById('loginPassword').value;
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const password = document.getElementById('loginPassword').value;
 
-            if (emailInput && passwordInput) {
-                const users = JSON.parse(localStorage.getItem('registered_users')) || [];
+            if (!email || !password) return;
 
-                // Buscar usuario coincidente en email y contraseña
-                const validUser = users.find(u => u.email === emailInput && u.password === passwordInput);
+            try {
+                const response = await fetch(`${API_AUTH_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
 
-                if (validUser) {
-                    localStorage.setItem('auth_token', 'session_active_token_' + Date.now());
-                    localStorage.setItem('user_profile_name', validUser.name);
-                    localStorage.setItem('user_profile_email', validUser.email);
+                if (!response.ok) {
+                    throw new Error('Correo o contraseña incorrectos');
+                }
 
+                const data = await response.json();
+                
+                // Capturar el token JWT que devuelve Java
+                const token = data.token || data.accessToken || data;
+
+                if (token) {
+                    // Guardar token REAL en localStorage
+                    localStorage.setItem('auth_token', token);
+                    localStorage.setItem('user_profile_name', data.name || email.split('@')[0]);
+                    localStorage.setItem('user_profile_email', email);
+
+                    // Redirigir de manera limpia al sistema principal
                     window.location.href = '../../index.html';
                 } else {
-                    alert('Correo o contraseña incorrectos. Por favor, verifica tus credenciales.');
+                    throw new Error('El servidor no devolvió un token válido.');
                 }
+
+            } catch (error) {
+                console.error('Error en login:', error);
+                alert('No se pudo iniciar sesión: ' + error.message);
             }
         });
     }
 
-    // 5. Autenticación con Google y Microsoft
+    // 5. Botones sociales (Aviso por defecto)
     if (btnGoogleAuth) {
         btnGoogleAuth.addEventListener('click', () => {
-            localStorage.setItem('auth_token', 'google_oauth_token_' + Date.now());
-            localStorage.setItem('user_profile_name', 'Usuario Google');
-            localStorage.setItem('user_profile_email', 'google.user@gmail.com');
-            window.location.href = '../../index.html';
+            alert('La autenticación con Google requiere configuración OAuth en el backend.');
         });
     }
 
     if (btnMicrosoftAuth) {
         btnMicrosoftAuth.addEventListener('click', () => {
-            localStorage.setItem('auth_token', 'microsoft_oauth_token_' + Date.now());
-            localStorage.setItem('user_profile_name', 'Usuario Microsoft');
-            localStorage.setItem('user_profile_email', 'microsoft.user@outlook.com');
-            window.location.href = '../../index.html';
+            alert('La autenticación con Microsoft requiere configuración OAuth en el backend.');
         });
     }
 });
-
