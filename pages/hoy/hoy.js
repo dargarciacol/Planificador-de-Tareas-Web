@@ -1,5 +1,5 @@
 /* ==========================================================================
-   pages/hoy/hoy.js - Gestión de Tareas de Hoy con Edición Integrada (Render API)
+   pages/hoy/hoy.js - Gestión de Tareas de Hoy (Render API en Línea)
    ========================================================================== */
 
 const API_URL = 'https://backend-planificador-de-tareas.onrender.com/api/tasks';
@@ -31,18 +31,10 @@ function getHeaders() {
     return headers;
 }
 
-// Mocks de respaldo
-const todayTasksMock = [
-    { id: 101, name: "Revisar logs del servidor Render", description: "Verificar conexión de la base de datos Supabase", dueDate: getTodayString(), status: "PENDING", priority: "Alta" },
-    { id: 102, name: "Prueba de endpoints con Swagger", description: "Probar respuestas 200 y 201 en la interfaz gráfica", dueDate: getTodayString(), status: "PENDING", priority: "Media" },
-    { id: 103, name: "Actualizar documentación README.md", description: "Agregar tabla de rutas REST y credenciales", dueDate: getTodayString(), status: "DONE", priority: "Baja" }
-];
-
 let todayTasks = [];
 let currentStatusFilter = 'ALL';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicializar Modal de Bootstrap
     if (editTaskModalEl && typeof bootstrap !== 'undefined') {
         editTaskModal = new bootstrap.Modal(editTaskModalEl);
     }
@@ -92,7 +84,7 @@ function setFilter(btn, filterType) {
     applyFilters();
 }
 
-// Consultar API / Backend
+// Consultar API / Backend directamente
 async function fetchTodayTasks() {
     try {
         const response = await fetch(API_URL, {
@@ -103,12 +95,22 @@ async function fetchTodayTasks() {
 
         const data = await response.json();
         const todayStr = getTodayString();
-        todayTasks = data.filter(task => task.dueDate === todayStr);
+        
+        // Filtrar exclusivamente las tareas cuya fecha coincida con el día de hoy
+        todayTasks = data
+            .map(t => ({
+                id: t.id,
+                name: t.name,
+                description: t.description || '',
+                dueDate: t.dueDate || '',
+                status: t.status,
+                priority: t.priority || 'Baja'
+            }))
+            .filter(task => task.dueDate === todayStr);
 
-        if (todayTasks.length === 0) todayTasks = [...todayTasksMock];
     } catch (error) {
-        console.warn('Usando datos de prueba para Hoy:', error);
-        todayTasks = [...todayTasksMock];
+        console.error('Error al conectar con la API de Render (Hoy):', error);
+        todayTasks = [];
     }
 
     updateCounter();
@@ -142,7 +144,7 @@ function applyFilters() {
     renderTasks(result);
 }
 
-// Renderizado con Botón de Editar (Lápiz)
+// Renderizado con Botón de Editar y Estado en Línea
 function renderTasks(tasks) {
     if (!todayTaskList) return;
 
@@ -150,7 +152,8 @@ function renderTasks(tasks) {
         todayTaskList.innerHTML = `
             <div class="text-center py-5">
                 <span class="material-symbols-outlined text-secondary" style="font-size: 58px;">event_available</span>
-                <h5 class="fw-semibold mt-3 text-dark">No hay tareas para mostrar</h5>
+                <h5 class="fw-semibold mt-3 text-dark">No hay tareas programadas para hoy</h5>
+                <p class="text-muted small">Crea o programa tareas con la fecha de hoy desde el inicio.</p>
             </div>
         `;
         return;
@@ -177,12 +180,10 @@ function renderTasks(tasks) {
                             ${task.priority || 'Baja'}
                         </span>
 
-                        <!-- Botón Editar -->
                         <button onclick="openEditModal(${task.id})" class="btn btn-outline-primary btn-sm rounded-circle p-2 d-flex align-items-center justify-content-center" title="Editar tarea">
                             <span class="material-symbols-outlined fs-6">edit</span>
                         </button>
 
-                        <!-- Botón Eliminar -->
                         <button onclick="deleteTask(${task.id})" class="btn btn-outline-danger btn-sm rounded-circle p-2 d-flex align-items-center justify-content-center" title="Eliminar tarea">
                             <span class="material-symbols-outlined fs-6">delete</span>
                         </button>
@@ -204,7 +205,7 @@ function getPriorityBadgeClass(priority) {
 }
 
 function escapeHTML(str) {
-    return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+    return String(str || '').replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
 }
 
 // Abrir Modal y Prellenar Datos
@@ -226,37 +227,30 @@ async function handleEditFormSubmit(e) {
     e.preventDefault();
 
     const id = parseInt(document.getElementById('editTaskId').value);
-    const updatedTask = {
-        name: document.getElementById('editTaskName').value,
-        description: document.getElementById('editTaskDescription').value,
+    const task = todayTasks.find(t => t.id === id);
+    if (!task) return;
+
+    const updatedData = {
+        name: document.getElementById('editTaskName').value.trim(),
+        description: document.getElementById('editTaskDescription').value.trim(),
         dueDate: document.getElementById('editTaskDueDate').value,
-        priority: document.getElementById('editTaskPriority').value
+        priority: document.getElementById('editTaskPriority').value,
+        status: task.status
     };
 
-    const taskIndex = todayTasks.findIndex(t => t.id === id);
-    if (taskIndex !== -1) {
-        updatedTask.status = todayTasks[taskIndex].status;
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: 'PUT',
+            headers: getHeaders(),
+            body: JSON.stringify(updatedData)
+        });
 
-        try {
-            const response = await fetch(`${API_URL}/${id}`, {
-                method: 'PUT',
-                headers: getHeaders(),
-                body: JSON.stringify(updatedTask)
-            });
-
-            if (response.ok) {
-                const updatedData = await response.json();
-                todayTasks[taskIndex] = updatedData;
-            } else {
-                todayTasks[taskIndex] = { ...todayTasks[taskIndex], ...updatedTask };
-            }
-        } catch (err) {
-            todayTasks[taskIndex] = { ...todayTasks[taskIndex], ...updatedTask };
+        if (response.ok) {
+            if (editTaskModal) editTaskModal.hide();
+            await fetchTodayTasks(); // Recargar datos sincronizados
         }
-
-        updateCounter();
-        applyFilters();
-        if (editTaskModal) editTaskModal.hide();
+    } catch (err) {
+        console.error('Error al actualizar la tarea:', err);
     }
 }
 
@@ -267,31 +261,42 @@ window.toggleTaskStatus = async function(id) {
 
     const isCurrentlyDone = task.status === 'DONE' || task.status === 'COMPLETED';
     const newStatus = isCurrentlyDone ? 'PENDING' : 'DONE';
-    task.status = newStatus;
 
     try {
-        await fetch(`${API_URL}/${id}`, {
+        const response = await fetch(`${API_URL}/${id}`, {
             method: 'PUT',
             headers: getHeaders(),
-            body: JSON.stringify(task)
+            body: JSON.stringify({
+                name: task.name,
+                description: task.description,
+                dueDate: task.dueDate,
+                priority: task.priority,
+                status: newStatus
+            })
         });
-    } catch (err) { console.warn('Cambio local de estado realizado.'); }
 
-    updateCounter();
-    applyFilters();
+        if (response.ok) {
+            await fetchTodayTasks();
+        }
+    } catch (err) {
+        console.error('Error al alternar estado:', err);
+    }
 };
 
 // Eliminar Tarea
 window.deleteTask = async function(id) {
     if (!confirm('¿Deseas eliminar esta tarea?')) return;
+    
     try { 
-        await fetch(`${API_URL}/${id}`, { 
+        const response = await fetch(`${API_URL}/${id}`, { 
             method: 'DELETE',
             headers: getHeaders()
         }); 
-    } catch (err) {}
-    
-    todayTasks = todayTasks.filter(t => t.id !== id);
-    updateCounter();
-    applyFilters();
+
+        if (response.ok || response.status === 204) {
+            await fetchTodayTasks();
+        }
+    } catch (err) {
+        console.error('Error al eliminar tarea:', err);
+    }
 };

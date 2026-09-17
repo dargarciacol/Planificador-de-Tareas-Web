@@ -1,6 +1,6 @@
 /* ==========================================================================
    pages/todas/todas.js
-   Lógica para listar, filtrar, editar y eliminar tareas (Render API + JWT)
+   Lógica para listar, filtrar, editar y eliminar tareas (Render API en Línea)
    ========================================================================== */
 
 const API_URL = 'https://backend-planificador-de-tareas.onrender.com/api/tasks';
@@ -19,14 +19,6 @@ const prioritySelectFilter = document.getElementById('prioritySelectFilter');
 const editTaskModalEl = document.getElementById('editTaskModal');
 let editTaskModal = null;
 const editTaskForm = document.getElementById('editTaskForm');
-
-// Mocks de respaldo
-const allTasksMock = [
-    { id: 201, name: "Diseñar arquitectura REST Spring Boot", description: "Definir Controllers, Services y DTOs", dueDate: "2026-09-10", status: "DONE", priority: "Alta" },
-    { id: 202, name: "Configurar Render y Supabase", description: "Conectar base de datos PostgreSQL en la nube", dueDate: "2026-09-12", status: "DONE", priority: "Alta" },
-    { id: 203, name: "Maquetar vista Todas las Tareas", description: "Crear layout responsive con sidebar y modal de edición", dueDate: "2026-09-18", status: "PENDING", priority: "Media" },
-    { id: 204, name: "Pruebas de endpoints en Swagger UI", description: "Verificar respuestas de endpoints GET, POST, PUT, DELETE", dueDate: "2026-09-20", status: "PENDING", priority: "Baja" }
-];
 
 let allTasks = [];
 let currentStatusFilter = 'ALL';
@@ -81,7 +73,7 @@ function setStatusFilter(btn, filterType) {
     applyFilters();
 }
 
-// Consultar todas las tareas desde el backend
+// Consultar todas las tareas directamente desde el backend en línea
 async function fetchAllTasks() {
     try {
         const response = await fetch(API_URL, {
@@ -91,14 +83,20 @@ async function fetchAllTasks() {
         
         if (!response.ok) throw new Error('API offline');
 
-        allTasks = await response.json();
+        const data = await response.json();
+        
+        allTasks = data.map(t => ({
+            id: t.id,
+            name: t.name,
+            description: t.description || '',
+            dueDate: t.dueDate || '',
+            status: t.status,
+            priority: t.priority || 'Baja'
+        }));
 
-        if (allTasks.length === 0) {
-            allTasks = [...allTasksMock];
-        }
     } catch (error) {
-        console.warn('Usando datos de prueba para el histórico:', error);
-        allTasks = [...allTasksMock];
+        console.error('Error al conectar con la API (Todas las tareas):', error);
+        allTasks = [];
     }
 
     updateCounter();
@@ -146,7 +144,7 @@ function renderTasks(tasks) {
             <div class="text-center py-5">
                 <span class="material-symbols-outlined text-secondary" style="font-size: 58px;">inbox</span>
                 <h5 class="fw-semibold mt-3 text-dark">No se encontraron tareas</h5>
-                <p class="text-muted small">Intenta cambiando los criterios de búsqueda o de filtro.</p>
+                <p class="text-muted small">Crea algunas tareas desde el inicio o cambia los filtros de búsqueda.</p>
             </div>
         `;
         return;
@@ -158,7 +156,6 @@ function renderTasks(tasks) {
             <div class="card all-task-card shadow-sm border-0 mb-2 ${isDone ? 'is-completed' : ''}">
                 <div class="card-body p-3 d-flex flex-wrap justify-content-between align-items-center gap-3">
                     
-                    <!-- Checkbox & Nombre/Descripción -->
                     <div class="d-flex align-items-center gap-3 flex-grow-1">
                         <button onclick="toggleTaskStatus(${task.id})" class="task-check-btn ${isDone ? 'checked' : ''}" title="${isDone ? 'Marcar como pendiente' : 'Marcar como completada'}">
                             <span class="material-symbols-outlined">${isDone ? 'check_circle' : 'radio_button_unchecked'}</span>
@@ -169,7 +166,6 @@ function renderTasks(tasks) {
                         </div>
                     </div>
 
-                    <!-- Metadata y Acciones -->
                     <div class="d-flex align-items-center gap-3 flex-wrap">
                         <small class="text-muted d-flex align-items-center gap-1">
                             <span class="material-symbols-outlined fs-6">calendar_today</span>
@@ -184,12 +180,10 @@ function renderTasks(tasks) {
                             ${isDone ? 'Completada' : 'Pendiente'}
                         </span>
 
-                        <!-- Botón Editar -->
                         <button onclick="openEditModal(${task.id})" class="btn btn-outline-primary btn-sm rounded-circle" title="Editar tarea">
                             <span class="material-symbols-outlined fs-6">edit</span>
                         </button>
 
-                        <!-- Botón Eliminar -->
                         <button onclick="deleteTask(${task.id})" class="btn btn-outline-danger btn-sm rounded-circle" title="Eliminar tarea">
                             <span class="material-symbols-outlined fs-6">delete</span>
                         </button>
@@ -211,7 +205,7 @@ function getPriorityBadgeClass(priority) {
 }
 
 function escapeHTML(str) {
-    return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+    return String(str || '').replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
 }
 
 // Abrir Modal y cargar datos actuales
@@ -233,37 +227,30 @@ async function handleEditFormSubmit(e) {
     e.preventDefault();
 
     const id = parseInt(document.getElementById('editTaskId').value);
-    const updatedTask = {
-        name: document.getElementById('editTaskName').value,
-        description: document.getElementById('editTaskDescription').value,
+    const task = allTasks.find(t => t.id === id);
+    if (!task) return;
+
+    const updatedData = {
+        name: document.getElementById('editTaskName').value.trim(),
+        description: document.getElementById('editTaskDescription').value.trim(),
         dueDate: document.getElementById('editTaskDueDate').value,
-        priority: document.getElementById('editTaskPriority').value
+        priority: document.getElementById('editTaskPriority').value,
+        status: task.status
     };
 
-    const taskIndex = allTasks.findIndex(t => t.id === id);
-    if (taskIndex !== -1) {
-        updatedTask.status = allTasks[taskIndex].status;
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: 'PUT',
+            headers: getHeaders(),
+            body: JSON.stringify(updatedData)
+        });
 
-        try {
-            const response = await fetch(`${API_URL}/${id}`, {
-                method: 'PUT',
-                headers: getHeaders(),
-                body: JSON.stringify(updatedTask)
-            });
-
-            if (response.ok) {
-                const updatedData = await response.json();
-                allTasks[taskIndex] = updatedData;
-            } else {
-                allTasks[taskIndex] = { ...allTasks[taskIndex], ...updatedTask };
-            }
-        } catch (err) {
-            allTasks[taskIndex] = { ...allTasks[taskIndex], ...updatedTask };
+        if (response.ok) {
+            if (editTaskModal) editTaskModal.hide();
+            await fetchAllTasks(); // Recargar datos sincronizados
         }
-
-        updateCounter();
-        applyFilters();
-        if (editTaskModal) editTaskModal.hide();
+    } catch (err) {
+        console.error('Error al actualizar la tarea:', err);
     }
 }
 
@@ -274,18 +261,26 @@ window.toggleTaskStatus = async function(id) {
 
     const isCurrentlyDone = task.status === 'DONE' || task.status === 'COMPLETED';
     const newStatus = isCurrentlyDone ? 'PENDING' : 'DONE';
-    task.status = newStatus;
 
     try {
-        await fetch(`${API_URL}/${id}`, {
+        const response = await fetch(`${API_URL}/${id}`, {
             method: 'PUT',
             headers: getHeaders(),
-            body: JSON.stringify(task)
+            body: JSON.stringify({
+                name: task.name,
+                description: task.description,
+                dueDate: task.dueDate,
+                priority: task.priority,
+                status: newStatus
+            })
         });
-    } catch (err) { console.warn('Estado cambiado localmente.'); }
 
-    updateCounter();
-    applyFilters();
+        if (response.ok) {
+            await fetchAllTasks();
+        }
+    } catch (err) {
+        console.error('Error al alternar estado:', err);
+    }
 };
 
 // Eliminar Tarea
@@ -293,13 +288,15 @@ window.deleteTask = async function(id) {
     if (!confirm('¿Deseas eliminar permanentemente esta tarea?')) return;
     
     try { 
-        await fetch(`${API_URL}/${id}`, { 
+        const response = await fetch(`${API_URL}/${id}`, { 
             method: 'DELETE',
             headers: getHeaders()
         }); 
-    } catch (err) {}
-    
-    allTasks = allTasks.filter(t => t.id !== id);
-    updateCounter();
-    applyFilters();
+
+        if (response.ok || response.status === 204) {
+            await fetchAllTasks();
+        }
+    } catch (err) {
+        console.error('Error al eliminar tarea:', err);
+    }
 };

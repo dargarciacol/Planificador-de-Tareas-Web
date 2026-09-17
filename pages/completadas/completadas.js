@@ -1,9 +1,8 @@
 /* ==========================================================================
    pages/completadas/completadas.js
-   Lógica dinámica para la gestión de Tareas Completadas (Render API)
+   Lógica dinámica para la gestión de Tareas Completadas (Render API en Línea)
    ========================================================================== */
 
-// 1. Configuración de API y Elementos del DOM
 const API_URL = 'https://backend-planificador-de-tareas.onrender.com/api/tasks';
 
 const completedTaskList = document.getElementById('completedTaskList');
@@ -26,101 +25,17 @@ function getHeaders() {
     return headers;
 }
 
-// 2. Datos Mock de respaldo (10 tareas completadas)
-const completedTasksMock = [
-    {
-        id: 1,
-        name: "Diseñar maqueta del Dashboard",
-        description: "Crear prototipo de alta fidelidad en Figma para el layout principal y sidebar",
-        dueDate: "2026-09-01",
-        status: "COMPLETED",
-        priority: "Alta"
-    },
-    {
-        id: 2,
-        name: "Configurar entidad Task en Spring Boot",
-        description: "Definir el modelo JPA con sus anotaciones @Entity, @Table y @Id",
-        dueDate: "2026-09-02",
-        status: "COMPLETED",
-        priority: "Alta"
-    },
-    {
-        id: 3,
-        name: "Crear script de base de datos FitLife",
-        description: "Construir tablas, llaves primarias y foráneas para el esquema PostgreSQL",
-        dueDate: "2026-09-03",
-        status: "COMPLETED",
-        priority: "Media"
-    },
-    {
-        id: 4,
-        name: "Implementar TaskRepository JPA",
-        description: "Extender JpaRepository para habilitar operaciones CRUD en la BD",
-        dueDate: "2026-09-05",
-        status: "COMPLETED",
-        priority: "Alta"
-    },
-    {
-        id: 5,
-        name: "Desplegar Node.js backend en Render",
-        description: "Configurar variables de entorno y conectar base de datos PostgreSQL",
-        dueDate: "2026-09-07",
-        status: "COMPLETED",
-        priority: "Alta"
-    },
-    {
-        id: 6,
-        name: "Configurar Swagger OpenAPI UI",
-        description: "Agregar dependencia Springdoc y clase SwaggerConfig para documentar la API",
-        dueDate: "2026-09-10",
-        status: "COMPLETED",
-        priority: "Media"
-    },
-    {
-        id: 7,
-        name: "Estructurar DTOs de Request y Response",
-        description: "Aislar la entidad del modelo creando TaskDTORequest y TaskDTOResponse",
-        dueDate: "2026-09-12",
-        status: "COMPLETED",
-        priority: "Media"
-    },
-    {
-        id: 8,
-        name: "Maquetar vista de Tareas Completadas",
-        description: "Crear el HTML modular con Bootstrap, Google Icons y estructura responsive",
-        dueDate: "2026-09-14",
-        status: "COMPLETED",
-        priority: "Baja"
-    },
-    {
-        id: 9,
-        name: "Resolver conflictos de merge en Git",
-        description: "Fusionar ramas del equipo y verificar integridad del repositorio",
-        dueDate: "2026-09-15",
-        status: "COMPLETED",
-        priority: "Alta"
-    },
-    {
-        id: 10,
-        name: "Validar conexión JDBC a Supabase",
-        description: "Probar cadena de conexión del pooler en application.properties",
-        dueDate: "2026-09-16",
-        status: "COMPLETED",
-        priority: "Alta"
-    }
-];
-
 // Variables de Estado Local
 let completedTasks = [];
 let currentPriorityFilter = 'ALL';
 
-// 3. Inicialización
+// Inicialización
 document.addEventListener('DOMContentLoaded', () => {
     initEvents();
     fetchCompletedTasks();
 });
 
-// 4. Configuración de Escuchadores de Eventos
+// Configuración de Escuchadores de Eventos
 function initEvents() {
     if (searchInput) {
         searchInput.addEventListener('input', applyFilters);
@@ -151,7 +66,7 @@ function initEvents() {
     }
 }
 
-// 5. Consulta de Tareas (Backend con Fallback a Mock)
+// Consulta de Tareas directamente desde la API en línea
 async function fetchCompletedTasks() {
     try {
         const response = await fetch(API_URL, {
@@ -163,37 +78,38 @@ async function fetchCompletedTasks() {
 
         const data = await response.json();
         
-        // Filtrar únicamente las tareas cuyo estado sea completado
-        completedTasks = data.filter(task => 
-            task.status === 'DONE' || task.status === 'COMPLETED'
-        );
-
-        // Si la base de datos aún no devuelve tareas completadas, cargar Mocks de prueba
-        if (completedTasks.length === 0) {
-            completedTasks = [...completedTasksMock];
-        }
+        // Mapear y filtrar únicamente las tareas cuyo estado sea completado (DONE o COMPLETED)
+        completedTasks = data
+            .map(t => ({
+                id: t.id,
+                name: t.name,
+                description: t.description || '',
+                dueDate: t.dueDate || '',
+                status: t.status,
+                priority: t.priority || 'Baja'
+            }))
+            .filter(task => task.status === 'DONE' || task.status === 'COMPLETED');
 
     } catch (error) {
-        console.warn('Backend offline o falló la petición. Usando datos mock:', error);
-        completedTasks = [...completedTasksMock];
+        console.error('Error al conectar con la API de Render:', error);
+        completedTasks = [];
     }
 
     updateCounter();
     applyFilters();
 }
 
-// 6. Actualización del Contador en el Encabezado
+// Actualización del Contador en el Encabezado
 function updateCounter() {
     if (completedCountBadge) {
         completedCountBadge.textContent = completedTasks.length;
     }
 }
 
-// 7. Lógica de Filtrado (Búsqueda y Prioridad)
+// Lógica de Filtrado (Búsqueda y Prioridad)
 function applyFilters() {
     let result = [...completedTasks];
 
-    // Búsqueda en título o descripción
     if (searchInput && searchInput.value.trim() !== '') {
         const query = searchInput.value.toLowerCase().trim();
         result = result.filter(task =>
@@ -202,7 +118,6 @@ function applyFilters() {
         );
     }
 
-    // Filtro por Prioridad
     if (currentPriorityFilter !== 'ALL') {
         result = result.filter(task => task.priority === currentPriorityFilter);
     }
@@ -210,7 +125,7 @@ function applyFilters() {
     renderTasks(result);
 }
 
-// 8. Renderizado Dinámico en el DOM
+// Renderizado Dinámico en el DOM
 function renderTasks(tasks) {
     if (!completedTaskList) return;
 
@@ -219,7 +134,7 @@ function renderTasks(tasks) {
             <div class="text-center py-5">
                 <span class="material-symbols-outlined text-secondary" style="font-size: 58px;">check_circle_outline</span>
                 <h5 class="fw-semibold mt-3 text-dark">No se encontraron tareas completadas</h5>
-                <p class="text-muted small">No hay coincidencias para el filtro o la búsqueda actual.</p>
+                <p class="text-muted small">Completa algunas tareas desde el inicio para verlas aquí.</p>
             </div>
         `;
         return;
@@ -229,7 +144,6 @@ function renderTasks(tasks) {
         <div class="card completed-task-card shadow-sm border-0 mb-2">
             <div class="card-body p-3 d-flex flex-wrap justify-content-between align-items-center gap-3">
                 
-                <!-- Información de la Tarea -->
                 <div class="d-flex align-items-center gap-3 flex-grow-1">
                     <span class="material-symbols-outlined text-success fs-3">task_alt</span>
                     <div>
@@ -238,26 +152,21 @@ function renderTasks(tasks) {
                     </div>
                 </div>
 
-                <!-- Metadata y Acciones -->
                 <div class="d-flex align-items-center gap-3 flex-wrap">
-                    <!-- Fecha -->
                     <small class="text-muted d-flex align-items-center gap-1">
                         <span class="material-symbols-outlined fs-6">calendar_today</span>
                         ${task.dueDate || 'Sin fecha'}
                     </small>
 
-                    <!-- Badge de Prioridad -->
                     <span class="badge ${getPriorityBadgeClass(task.priority)} px-3 py-1">
                         ${task.priority || 'Baja'}
                     </span>
 
-                    <!-- Botón Reabrir -->
                     <button onclick="reopenTask(${task.id})" class="btn btn-outline-warning btn-sm btn-reopen d-flex align-items-center gap-1" title="Reabrir tarea">
                         <span class="material-symbols-outlined fs-6">undo</span>
                         <span>Reabrir</span>
                     </button>
 
-                    <!-- Botón Eliminar -->
                     <button onclick="deleteTask(${task.id})" class="btn btn-outline-danger btn-sm rounded-circle p-2 d-flex align-items-center justify-content-center" title="Eliminar definitivamente">
                         <span class="material-symbols-outlined fs-6">delete</span>
                     </button>
@@ -268,7 +177,6 @@ function renderTasks(tasks) {
     `).join('');
 }
 
-// 9. Funciones Auxiliares de Diseño
 function getPriorityBadgeClass(priority) {
     switch (priority) {
         case 'Alta': return 'badge-priority-alta';
@@ -293,20 +201,17 @@ function setActiveFilterBtn(selectedBtn) {
 }
 
 function escapeHTML(str) {
-    return str.replace(/[&<>'"]/g, 
+    return String(str || '').replace(/[&<>'"]/g, 
         tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
     );
 }
 
-// 10. Funciones Globales de Acción (Accesibles desde el HTML)
+// Funciones Globales de Acción en Línea
 window.reopenTask = async function(id) {
-    const taskIndex = completedTasks.findIndex(t => t.id === id);
-    if (taskIndex === -1) return;
-
-    const task = completedTasks[taskIndex];
+    const task = completedTasks.find(t => t.id === id);
+    if (!task) return;
 
     try {
-        // Intenta actualizar en el backend cambiando estado a PENDING enviando JWT
         const response = await fetch(`${API_URL}/${id}`, {
             method: 'PUT',
             headers: getHeaders(),
@@ -319,21 +224,11 @@ window.reopenTask = async function(id) {
             })
         });
 
-        if (response.ok || response.status === 200) {
-            completedTasks.splice(taskIndex, 1);
-            updateCounter();
-            applyFilters();
-        } else {
-            // Reabrir localmente si la API rechaza
-            completedTasks.splice(taskIndex, 1);
-            updateCounter();
-            applyFilters();
+        if (response.ok) {
+            await fetchCompletedTasks(); // Recargar desde la API en línea
         }
     } catch (err) {
-        // Fallback local
-        completedTasks.splice(taskIndex, 1);
-        updateCounter();
-        applyFilters();
+        console.error('Error al reabrir la tarea:', err);
     }
 };
 
@@ -346,15 +241,10 @@ window.deleteTask = async function(id) {
             headers: getHeaders()
         });
 
-        if (response.ok || response.status === 204 || response.status === 404) {
-            completedTasks = completedTasks.filter(t => t.id !== id);
-            updateCounter();
-            applyFilters();
+        if (response.ok || response.status === 204) {
+            await fetchCompletedTasks(); // Recargar desde la API en línea
         }
     } catch (err) {
-        // Fallback local
-        completedTasks = completedTasks.filter(t => t.id !== id);
-        updateCounter();
-        applyFilters();
+        console.error('Error al eliminar la tarea:', err);
     }
 };
